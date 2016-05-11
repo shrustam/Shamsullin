@@ -63,7 +63,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\jquery.js" />
+    <EmbeddedResource Include="Resources\Jquery.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
