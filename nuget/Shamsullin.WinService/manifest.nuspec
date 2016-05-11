@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>Shamsullin.WinService</id>
+        <version>1.0.0</version>
+        <authors>XerMajor</authors>
+        <projectUrl>https://github.com/XerMajor/Shamsullin</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Win services quick creation</description>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Shamsullin.Common" version="1.0.3" />
+            </group>
+        </dependencies>
+        <contentFiles>
+            <files include="*.cs" buildAction="Compile" />
+            <files include="*.bat" buildAction="None" copyToOutput="true" />
+        </contentFiles>
+    </metadata>
+    <files>
+        <file src="content\install.bat" target="content\install.bat" />
+        <file src="content\Service.cs" target="content\Service.cs" />
+        <file src="content\Installer.cs" target="content\Installer.cs" />
+        <file src="content\Installer.resx" target="content\Installer.resx" />
+        <file src="content\uninstall.bat" target="content\uninstall.bat" />
+    </files>
+</package>

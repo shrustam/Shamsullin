@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appSettings>
+    <!-- RMQ Settings -->
+    <add key="InputQueue" value="" />
+    <add key="RabbitExchange" value="" />
+    <add key="RabbitUri" value="amqp://" />
+    <add key="RabbitNumberOfWorkerThreads" value="1" />
+    <add key="RabbitMaxRetries" value="10" />
+    <add key="RabbitSleepOnError" value="5000" />
+  </appSettings>
+</configuration>

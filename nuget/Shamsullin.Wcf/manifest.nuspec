@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>Shamsullin.Wcf</id>
+        <version>1.0.1</version>
+        <authors>XerMajor</authors>
+        <projectUrl>https://github.com/XerMajor/Shamsullin</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Infrastructure code for WCF projects</description>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Shamsullin.Common" version="1.0.3" />
+                <dependency id="Newtonsoft.Json" version="8.0.3" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\..\src\Shamsullin.Wcf\bin\Debug\Shamsullin.Wcf.dll" target="lib\net45\Shamsullin.Wcf.dll" />
+    </files>
+</package>

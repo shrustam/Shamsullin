@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>Shamsullin.Common</id>
+        <version>1.0.3</version>
+        <authors>XerMajor</authors>
+        <projectUrl>https://github.com/XerMajor/Shamsullin</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Infrastructure code for all the projects</description>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="log4net" version="1.2.11" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\..\src\Shamsullin.Common\bin\Debug\Shamsullin.Common.dll" target="lib\net45\Shamsullin.Common.dll" />
+		<file src="content\config.transform" target="content\app.config.transform" />
+		<file src="content\config.transform" target="content\web.config.transform" />
+    </files>
+</package>
