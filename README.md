@@ -1,2 +1,2 @@
-# Shamsullin.Common
-Infrastructure code for all the projects
+# Shamsullin
+My infrastructure code
