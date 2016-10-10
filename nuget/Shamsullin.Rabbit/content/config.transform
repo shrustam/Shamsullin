@@ -2,8 +2,8 @@
 <configuration>
   <appSettings>
     <!-- RMQ Settings -->
-    <add key="InputQueue" value="" />
     <add key="RabbitExchange" value="" />
+    <add key="RabbitQueue" value="" />
     <add key="RabbitUri" value="amqp://" />
     <add key="RabbitNumberOfWorkerThreads" value="1" />
     <add key="RabbitMaxRetries" value="10" />

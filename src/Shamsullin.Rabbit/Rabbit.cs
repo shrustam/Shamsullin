@@ -60,13 +60,10 @@ namespace Shamsullin.Rabbit
 
         private static string InputQueue { get { return CurrentContext.InputQueue; } }
 
-        public static void Publish<T>(params T[] messages)
+        public static void Publish<T>(T message)
         {
-            foreach (var message in messages)
-            {
-                Publish(message, string.Empty, ConfigurationManager.AppSettings["RabbitExchange"], 
-                    new[] { new KeyValuePair<string, object>("message", message.GetType().FullName) });
-            }
+            Publish(message, string.Empty, ConfigurationManager.AppSettings["RabbitExchange"], 
+                new[] { new KeyValuePair<string, object>("message", message.GetType().FullName) });
         }
 
         public static void Publish<T>(T message, string routingKey, string exchange, KeyValuePair<string, object>[] headers)
@@ -232,7 +229,16 @@ namespace Shamsullin.Rabbit
             {
                 return Model.QueueDeclarePassive(queueName).MessageCount;
             }
-        }        
+        }
+
+        /// <summary>
+        /// Single thread. One consumer.
+        /// One dequeue, process, ack.
+        /// </summary>
+        public static void Install<TM>(Action<TM> handler) where TM : class
+        {
+            Install(ConfigurationManager.AppSettings["RabbitQueue"], handler);
+        }
 
         /// <summary>
         /// Single thread. One consumer.
@@ -251,7 +257,7 @@ namespace Shamsullin.Rabbit
 	        }
         }
 
-		public static void InstallParallel<TM>(string inputQueue, Action<TM> handler, int workersCount) where TM : class
+        public static void InstallParallel<TM>(string inputQueue, Action<TM> handler, int workersCount) where TM : class
         {
             for (; workersCount > 0; workersCount--)
             {
