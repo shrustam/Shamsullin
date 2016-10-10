@@ -93,14 +93,14 @@ namespace Shamsullin.Common.Extensions
 			var sourceProperties = source.GetType().GetPropertiesEx();
 			var destProperties = destType.GetPropertiesEx();
 
-			foreach (var destProperty in destProperties)
+			foreach (var destProperty in destProperties.WhereEx(x => x.SetMethod != null))
 			{
 				var sourceProperty = sourceProperties.FirstOrDefault(x => x.Name.ToLower() == destProperty.Name.ToLower());
 				if (sourceProperty != null)
 				{
 					var value = sourceProperty.GetValue(source, null);
 					if (value == null) continue;
-					destProperty.SetValue(result, value, null);
+                    destProperty.SetValue(result, value, null);
 				}
 			}
 
@@ -121,7 +121,7 @@ namespace Shamsullin.Common.Extensions
 			var result = new TDest();
 			var destProperties = typeof(TDest).GetPropertiesEx();
 
-			foreach (var destProperty in destProperties)
+			foreach (var destProperty in destProperties.WhereEx(x => x.SetMethod != null))
 			{
 				if (source.ContainsKey(destProperty.Name))
 				{
@@ -165,7 +165,7 @@ namespace Shamsullin.Common.Extensions
 		public static T Create<T>(this DataRow dataRow, Action<T> action = null) where T : new()
 		{
 			var result = new T();
-			foreach (var property in typeof(T).GetPropertiesEx())
+			foreach (var property in typeof(T).GetPropertiesEx().WhereEx(x => x.SetMethod != null))
 			{
 				if (dataRow.Table.Columns.Contains(property.Name))
 				{
@@ -182,7 +182,7 @@ namespace Shamsullin.Common.Extensions
 		public static T Create<T>(this IDataReader reader, Action<T> action = null) where T : new()
 		{
 			var result = new T();
-			foreach (var property in typeof(T).GetPropertiesEx())
+			foreach (var property in typeof(T).GetPropertiesEx().WhereEx(x => x.SetMethod != null))
 			{
 				property.SetValue(result, reader.GetValue(property.Name).To(property.PropertyType), null);
 			}
