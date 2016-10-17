@@ -22,7 +22,7 @@ namespace Shamsullin.Wcf
 		    fault = Message.CreateMessage(version, null, errorModel, new DataContractJsonSerializer(typeof (ErrorModel)));
 			fault.Properties.Add(WebBodyFormatMessageProperty.Name, new WebBodyFormatMessageProperty(WebContentFormat.Json));
 
-		    if (error.GetType() == typeof (AuthenticationException))
+		    if (IsAuthenticationException(error))
 		    {
 		        var rmp = new HttpResponseMessageProperty {StatusCode = HttpStatusCode.Unauthorized};
                 rmp.StatusDescription = rmp.StatusCode.ToString();
@@ -50,6 +50,17 @@ namespace Shamsullin.Wcf
 		{
 			Log.Instance.Info(error.TargetSite.Name, error);
 			return false;
+		}
+
+		public bool IsAuthenticationException(Exception error)
+		{
+		    var current = error;
+		    while (current != null)
+		    {
+		        if (current.GetType() == typeof (AuthenticationException)) return true;
+                current = current.InnerException;
+		    }
+		    return false;
 		}
     }
 
