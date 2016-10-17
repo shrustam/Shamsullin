@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -11,9 +10,10 @@ namespace Shamsullin.Common
     /// </summary>
     public class Http
     {
-        public static string Get(Uri url, NameValueCollection headers = null)
+        public static string Get(string url, CookieContainer cookies = null, NameValueCollection headers = null)
         {
             var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+            if (cookies != null) httpRequest.CookieContainer = cookies;
             if (headers != null) httpRequest.Headers.Add(headers);
             using (var response = (HttpWebResponse) httpRequest.GetResponse())
             {
@@ -22,9 +22,10 @@ namespace Shamsullin.Common
             }
         }
 
-        public static string Post(string url, string body, string contentType = "application/x-www-form-urlencoded", NameValueCollection headers = null)
+        public static string Post(string url, string body, string contentType = "application/x-www-form-urlencoded", CookieContainer cookies = null, NameValueCollection headers = null)
         {
-            var httpRequest = WebRequest.Create(url);
+            var httpRequest = (HttpWebRequest) WebRequest.Create(url);
+            if (cookies != null) httpRequest.CookieContainer = cookies;
             if (headers != null) httpRequest.Headers.Add(headers);
             httpRequest.ContentType = contentType;
             httpRequest.Method = "POST";
