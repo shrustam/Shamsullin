@@ -33,7 +33,7 @@ namespace Shamsullin.Wcf
                 StatusCode = HttpStatusCode.OK
             };
         }
-        
+
         public bool HandleError(Exception error)
         {
             Log.Instance.ErrorFormat($"{error.TargetSite.Name}: {error}");
@@ -49,12 +49,11 @@ namespace Shamsullin.Wcf
     {
         public void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
         {
-
         }
 
-        public void AddBindingParameters(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters)
+        public void AddBindingParameters(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase,
+            Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters)
         {
-
         }
 
         public void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)

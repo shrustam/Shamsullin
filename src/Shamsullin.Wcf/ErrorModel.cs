@@ -6,15 +6,15 @@ namespace Shamsullin.Wcf
     /// Web services error model. Returns is exception happens.
     /// </summary>
     [DataContract]
-	public class ErrorModel
-	{
+    public class ErrorModel
+    {
         [DataMember]
-		public bool Success { get; set; }
+        public bool Success { get; set; }
 
         [DataMember]
         public string Message { get; set; }
 
         [DataMember]
         public string Type { get; set; }
-	}
+    }
 }

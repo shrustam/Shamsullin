@@ -10,6 +10,7 @@ namespace Shamsullin.Common
     public class Highcached
     {
         public delegate T Geter<out T>();
+
         private readonly bool _usePreload;
         private readonly double? _minutesForCache;
 

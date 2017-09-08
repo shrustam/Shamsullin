@@ -6,52 +6,52 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace Shamsullin.Common.Extensions
 {
     public static class ObjectExtensions
-	{
-		public static TResult With<T, TResult>(this T @this, Func<T, TResult> func) where T : class
-		{
-			if (@this == null) return default(TResult);
-			return func(@this);
-		}
-
-		public static bool GreaterThan(this object value1, object value2)
-		{
-			if (value1 == null) return false;
-			if (value2 == null) return true;
-			var cValue1 = (IComparable)value1.To(value1.GetType());
-			var cValue2 = (IComparable)value2.To(value1.GetType());
-			return cValue1.CompareTo(cValue2) > 0;
-		}
-
-		public static bool GreaterOrEqual(this object value1, object value2)
-		{
-			if (value1 == null) return false;
-			if (value2 == null) return true;
-			var cValue1 = (IComparable)value1.To(value1.GetType());
-			var cValue2 = (IComparable)value2.To(value1.GetType());
-			return cValue1.CompareTo(cValue2) >= 0;
-		}
-
-		public static bool LessThan(this object value1, object value2)
-		{
-			if (value1 == null) return true;
-			if (value2 == null) return false;
-			var cValue1 = (IComparable)value1.To(value1.GetType());
-			var cValue2 = (IComparable)value2.To(value1.GetType());
-			return cValue1.CompareTo(cValue2) < 0;
-		}
-
-		public static bool LessOrEqual(this object value1, object value2)
-		{
-			if (value1 == null) return true;
-			if (value2 == null) return false;
-			var cValue1 = (IComparable)value1.To(value1.GetType());
-			var cValue2 = (IComparable)value2.To(value1.GetType());
-			return cValue1.CompareTo(cValue2) <= 0;
-		}
-
-	    public static T Clone<T>(this T source)
+    {
+        public static TResult With<T, TResult>(this T @this, Func<T, TResult> func) where T : class
         {
-            if (!typeof(T).IsSerializable)
+            if (@this == null) return default(TResult);
+            return func(@this);
+        }
+
+        public static bool GreaterThan(this object value1, object value2)
+        {
+            if (value1 == null) return false;
+            if (value2 == null) return true;
+            var cValue1 = (IComparable) value1.To(value1.GetType());
+            var cValue2 = (IComparable) value2.To(value1.GetType());
+            return cValue1.CompareTo(cValue2) > 0;
+        }
+
+        public static bool GreaterOrEqual(this object value1, object value2)
+        {
+            if (value1 == null) return false;
+            if (value2 == null) return true;
+            var cValue1 = (IComparable) value1.To(value1.GetType());
+            var cValue2 = (IComparable) value2.To(value1.GetType());
+            return cValue1.CompareTo(cValue2) >= 0;
+        }
+
+        public static bool LessThan(this object value1, object value2)
+        {
+            if (value1 == null) return true;
+            if (value2 == null) return false;
+            var cValue1 = (IComparable) value1.To(value1.GetType());
+            var cValue2 = (IComparable) value2.To(value1.GetType());
+            return cValue1.CompareTo(cValue2) < 0;
+        }
+
+        public static bool LessOrEqual(this object value1, object value2)
+        {
+            if (value1 == null) return true;
+            if (value2 == null) return false;
+            var cValue1 = (IComparable) value1.To(value1.GetType());
+            var cValue2 = (IComparable) value2.To(value1.GetType());
+            return cValue1.CompareTo(cValue2) <= 0;
+        }
+
+        public static T Clone<T>(this T source)
+        {
+            if (!typeof (T).IsSerializable)
             {
                 throw new ArgumentException("The type must be serializable.", "source");
             }
@@ -67,10 +67,10 @@ namespace Shamsullin.Common.Extensions
             {
                 formatter.Serialize(stream, source);
                 stream.Seek(0, SeekOrigin.Begin);
-                return (T)formatter.Deserialize(stream);
+                return (T) formatter.Deserialize(stream);
             }
         }
-        
+
         public static T To<T>(this object obj)
         {
             return obj.To(default(T));
@@ -109,7 +109,7 @@ namespace Shamsullin.Common.Extensions
             {
                 return obj;
             }
-            if (type == typeof(string))
+            if (type == typeof (string))
             {
                 return obj;
             }
@@ -124,15 +124,15 @@ namespace Shamsullin.Common.Extensions
         public static object To(this object obj, Type type)
         {
             if (obj == null || obj == DBNull.Value)
-			{
-				if (type.IsValueType) return Activator.CreateInstance(type);
-				return null;
+            {
+                if (type.IsValueType) return Activator.CreateInstance(type);
+                return null;
             }
             if (obj.GetType() == type)
             {
                 return obj;
             }
-            if (type == typeof(string))
+            if (type == typeof (string))
             {
                 return obj;
             }
@@ -144,52 +144,52 @@ namespace Shamsullin.Common.Extensions
             return To(obj, Activator.CreateInstance(type), type);
         }
 
-	    private static T To<T>(object obj, T defaultValue, Type type)
-	    {
-		    if (type.IsEnum)
-		    {
-			    if (obj is decimal)
-			    {
-				    return (T) Enum.Parse(type, obj.ToString());
-			    }
-			    if (obj is string)
-			    {
-				    return (T) Enum.Parse(type, (string) obj);
-			    }
-			    if (obj is long)
-			    {
-				    return (T) Enum.Parse(type, obj.ToString());
-			    }
-			    if (Enum.IsDefined(type, obj))
-			    {
-				    return (T) Enum.Parse(type, obj.ToString());
-			    }
-			    return defaultValue;
-		    }
-		    try
-		    {
-			    if (type == typeof (Guid))
-			    {
-				    return (T) (object) new Guid(obj.ToString());
-			    }
-			    if (type == typeof (float))
-			    {
-				    return (T) (object) obj.ToSingle();
-				}
-				if (type == typeof(decimal))
-				{
-					return (T)(object)obj.ToDecimal();
-				}
+        private static T To<T>(object obj, T defaultValue, Type type)
+        {
+            if (type.IsEnum)
+            {
+                if (obj is decimal)
+                {
+                    return (T) Enum.Parse(type, obj.ToString());
+                }
+                if (obj is string)
+                {
+                    return (T) Enum.Parse(type, (string) obj);
+                }
+                if (obj is long)
+                {
+                    return (T) Enum.Parse(type, obj.ToString());
+                }
+                if (Enum.IsDefined(type, obj))
+                {
+                    return (T) Enum.Parse(type, obj.ToString());
+                }
+                return defaultValue;
+            }
+            try
+            {
+                if (type == typeof (Guid))
+                {
+                    return (T) (object) new Guid(obj.ToString());
+                }
+                if (type == typeof (float))
+                {
+                    return (T) (object) obj.ToSingle();
+                }
+                if (type == typeof (decimal))
+                {
+                    return (T) (object) obj.ToDecimal();
+                }
 
-			    return (T) Convert.ChangeType(obj, type);
-		    }
-		    catch
-		    {
-			    return defaultValue;
-		    }
-	    }
+                return (T) Convert.ChangeType(obj, type);
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
 
-	    public static bool ToBool(this object obj)
+        public static bool ToBool(this object obj)
         {
             bool boolValue;
             int intValue;
@@ -220,7 +220,7 @@ namespace Shamsullin.Common.Extensions
                 if (
                     decimal.TryParse(
                         obj.ToString().Replace(CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator,
-                                               CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator),
+                            CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator),
                         out decValue))
                 {
                     return decValue;
@@ -236,12 +236,12 @@ namespace Shamsullin.Common.Extensions
                 float sinValue;
                 if (obj is float)
                 {
-                    return (float)obj;
+                    return (float) obj;
                 }
                 if (
                     float.TryParse(
                         obj.ToString().Replace(CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator,
-                                               CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator),
+                            CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator),
                         out sinValue))
                 {
                     return sinValue;
@@ -262,7 +262,7 @@ namespace Shamsullin.Common.Extensions
                 if (
                     double.TryParse(
                         obj.ToString().Replace(CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator,
-                                               CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator),
+                            CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator),
                         out dbValue))
                 {
                     return dbValue;
@@ -280,7 +280,10 @@ namespace Shamsullin.Common.Extensions
                 {
                     return (int) obj;
                 }
-                if (int.TryParse(obj.ToString(), out intValue))
+
+                IFormatProvider provider = CultureInfo.InvariantCulture;
+                var objectAsString = Convert.ToString(obj, provider);
+                if (int.TryParse(objectAsString, NumberStyles.Any, provider, out intValue))
                 {
                     return intValue;
                 }

@@ -9,29 +9,29 @@ namespace Shamsullin.Common
     /// </summary>
     public class AsyncManager
     {
-		private readonly WaitCallback _callback;
-        
+        private readonly WaitCallback _callback;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncManager"/> class.
         /// </summary>
-		public AsyncManager(WaitCallback callback)
+        public AsyncManager(WaitCallback callback)
         {
             _callback = callback;
         }
 
-		public static void SetMinThreads(int cnt)
-		{
-			int workerThreads, complete;
-			ThreadPool.GetMinThreads(out workerThreads, out complete);
-			ThreadPool.SetMinThreads(cnt, complete);
+        public static void SetMinThreads(int cnt)
+        {
+            int workerThreads, complete;
+            ThreadPool.GetMinThreads(out workerThreads, out complete);
+            ThreadPool.SetMinThreads(cnt, complete);
         }
 
         public Task ExecuteAsync(object state = null)
         {
-			return Task.Factory.StartNew(() => Method(state));
+            return Task.Factory.StartNew(() => Method(state));
         }
 
-		protected void Method(object state)
+        protected void Method(object state)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace Shamsullin.Common
             }
             catch (Exception ex)
             {
-				Log.Instance.Error("Async execution error.", ex);
+                Log.Instance.Error("Async execution error.", ex);
             }
         }
     }

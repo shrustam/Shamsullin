@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shamsullin.Common", "src\Shamsullin.Common\Shamsullin.Common.csproj", "{C9A7783F-E00F-4E07-BD38-9C2FCC926DFA}"
 EndProject
@@ -12,8 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shamsullin.Rabbit", "src\Shamsullin.Rabbit\Shamsullin.Rabbit.csproj", "{92B25A78-9D69-4258-B3DD-09677726C3A1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{40A5E288-6526-4E7B-889D-5BD9499E60DC}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{0FB69ADF-0DE3-467A-B02E-524787340AF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

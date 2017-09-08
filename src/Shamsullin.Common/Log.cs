@@ -9,9 +9,10 @@ namespace Shamsullin.Common
     {
         static Log()
         {
-			XmlConfigurator.Configure();
+            XmlConfigurator.Configure();
             Instance = LogManager.GetLogger(string.Empty);
-            ConfigurationManager.AppSettings.AllKeys.ForEach(x => Instance.InfoFormat("{0}: {1}", x, ConfigurationManager.AppSettings[x]));
+            ConfigurationManager.AppSettings.AllKeys.ForEach(
+                x => Instance.InfoFormat("{0}: {1}", x, ConfigurationManager.AppSettings[x]));
         }
 
         public static ILog Instance { get; private set; }
