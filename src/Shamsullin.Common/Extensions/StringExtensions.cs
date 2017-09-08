@@ -10,6 +10,9 @@ using System.Xml.Linq;
 
 namespace Shamsullin.Common.Extensions
 {
+    /// <summary>
+    /// Extensions for System.String.
+    /// </summary>
     public static class StringExtensions
     {
         private static readonly Regex RegexUnicodeSymbol = new Regex(@"&#x\d{4,};", RegexOptions.Compiled);
@@ -17,6 +20,9 @@ namespace Shamsullin.Common.Extensions
 
         private static readonly ConcurrentDictionary<string, string> Locks = new ConcurrentDictionary<string, string>();
 
+        /// <summary>
+        /// Creates an interned string to be used in synchronization context.
+        /// </summary>
         public static string SyncRoot(this string str)
         {
             return Locks.GetOrAdd(str, string.Copy);

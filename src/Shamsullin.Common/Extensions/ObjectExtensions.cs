@@ -5,14 +5,29 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Shamsullin.Common.Extensions
 {
+    /// <summary>
+    /// Extension applicable for all objects.
+    /// </summary>
     public static class ObjectExtensions
     {
+        /// <summary>
+        /// Returns the default value if the input object is null.
+        /// </summary>
+        /// <param name="this">The input object.</param>
+        /// <param name="func">The function to apply.</param>
+        /// <returns>Results of function or default value</returns>
         public static TResult With<T, TResult>(this T @this, Func<T, TResult> func) where T : class
         {
             if (@this == null) return default(TResult);
             return func(@this);
         }
 
+        /// <summary>
+        /// Checks if one object is greater than another.
+        /// </summary>
+        /// <param name="value1">The object 1.</param>
+        /// <param name="value2">The object 2.</param>
+        /// <returns>Result of the comparison</returns>
         public static bool GreaterThan(this object value1, object value2)
         {
             if (value1 == null) return false;
@@ -22,6 +37,12 @@ namespace Shamsullin.Common.Extensions
             return cValue1.CompareTo(cValue2) > 0;
         }
 
+        /// <summary>
+        /// Checks if one object is greater or equal than another.
+        /// </summary>
+        /// <param name="value1">The object 1.</param>
+        /// <param name="value2">The object 2.</param>
+        /// <returns>Result of the comparison</returns>
         public static bool GreaterOrEqual(this object value1, object value2)
         {
             if (value1 == null) return false;
@@ -31,6 +52,12 @@ namespace Shamsullin.Common.Extensions
             return cValue1.CompareTo(cValue2) >= 0;
         }
 
+        /// <summary>
+        /// Checks if one object is less than another.
+        /// </summary>
+        /// <param name="value1">The object 1.</param>
+        /// <param name="value2">The object 2.</param>
+        /// <returns>Result of the comparison</returns>
         public static bool LessThan(this object value1, object value2)
         {
             if (value1 == null) return true;
@@ -40,6 +67,12 @@ namespace Shamsullin.Common.Extensions
             return cValue1.CompareTo(cValue2) < 0;
         }
 
+        /// <summary>
+        /// Checks if one object is less or equal than another.
+        /// </summary>
+        /// <param name="value1">The object 1.</param>
+        /// <param name="value2">The object 2.</param>
+        /// <returns>Result of the comparison</returns>
         public static bool LessOrEqual(this object value1, object value2)
         {
             if (value1 == null) return true;
@@ -49,6 +82,12 @@ namespace Shamsullin.Common.Extensions
             return cValue1.CompareTo(cValue2) <= 0;
         }
 
+        /// <summary>
+        /// Deeply clones the specified object using serialization.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns>Deeply cloned object</returns>
+        /// <exception cref="ArgumentException">The type must be serializable. - source</exception>
         public static T Clone<T>(this T source)
         {
             if (!typeof (T).IsSerializable)
@@ -71,11 +110,24 @@ namespace Shamsullin.Common.Extensions
             }
         }
 
+        /// <summary>
+        /// Converts the object to the specified type.
+        /// </summary>
+        /// <typeparam name="T">The destination generic type.</typeparam>
+        /// <param name="obj">The object.</param>
+        /// <returns>Converted value</returns>
         public static T To<T>(this object obj)
         {
             return obj.To(default(T));
         }
 
+        /// <summary>
+        /// Converts the object to the specified type.
+        /// </summary>
+        /// <typeparam name="T">The destination generic type.</typeparam>
+        /// <param name="obj">The object.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>Converted value</returns>
         public static T To<T>(this object obj, T defaultValue)
         {
             if (obj == null || obj == DBNull.Value)
@@ -99,6 +151,13 @@ namespace Shamsullin.Common.Extensions
             return To(obj, defaultValue, type);
         }
 
+        /// <summary>
+        /// Converts the object to the specified type.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="type">The destination type.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>Converted value</returns>
         public static object To(this object obj, Type type, object defaultValue)
         {
             if (obj == null || obj == DBNull.Value)
@@ -121,11 +180,20 @@ namespace Shamsullin.Common.Extensions
             return To(obj, defaultValue, type);
         }
 
+        /// <summary>
+        /// Converts the object to the specified type.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="type">The destination type.</param>
+        /// <returns>Converted value</returns>
         public static object To(this object obj, Type type)
         {
             if (obj == null || obj == DBNull.Value)
             {
-                if (type.IsValueType) return Activator.CreateInstance(type);
+                if (type.IsValueType)
+                {
+                    return Activator.CreateInstance(type);
+                }
                 return null;
             }
             if (obj.GetType() == type)
@@ -144,6 +212,14 @@ namespace Shamsullin.Common.Extensions
             return To(obj, Activator.CreateInstance(type), type);
         }
 
+        /// <summary>
+        /// Converts the object to the specified type.
+        /// </summary>
+        /// <typeparam name="T">The destination generic type.</typeparam>
+        /// <param name="obj">The object.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="type">The destination type.</param>
+        /// <returns>Converted value </returns>
         private static T To<T>(object obj, T defaultValue, Type type)
         {
             if (type.IsEnum)
@@ -189,25 +265,11 @@ namespace Shamsullin.Common.Extensions
             }
         }
 
-        public static bool ToBool(this object obj)
-        {
-            bool boolValue;
-            int intValue;
-            if (obj == null || obj == DBNull.Value)
-            {
-                return false;
-            }
-            if (obj is bool)
-            {
-                return (bool) obj;
-            }
-            if (bool.TryParse(obj.ToString(), out boolValue))
-            {
-                return boolValue;
-            }
-            return (int.TryParse(obj.ToString(), out intValue) && (intValue != 0));
-        }
-
+        /// <summary>
+        /// Converts an object to decimal. If conversion is impossible returns 0.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>Converted value</returns>
         public static decimal ToDecimal(this object obj)
         {
             if (obj != null)
@@ -217,11 +279,10 @@ namespace Shamsullin.Common.Extensions
                 {
                     return (decimal) obj;
                 }
-                if (
-                    decimal.TryParse(
-                        obj.ToString().Replace(CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator,
-                            CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator),
-                        out decValue))
+                if (decimal.TryParse(obj.ToString().Replace(
+                    CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator,
+                    CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator),
+                    out decValue))
                 {
                     return decValue;
                 }
@@ -229,6 +290,11 @@ namespace Shamsullin.Common.Extensions
             return 0M;
         }
 
+        /// <summary>
+        /// Converts an object to single. If conversion is impossible returns 0.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>Converted value</returns>
         public static float ToSingle(this object obj)
         {
             if (obj != null)
@@ -238,11 +304,10 @@ namespace Shamsullin.Common.Extensions
                 {
                     return (float) obj;
                 }
-                if (
-                    float.TryParse(
-                        obj.ToString().Replace(CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator,
-                            CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator),
-                        out sinValue))
+                if (float.TryParse(obj.ToString().Replace(
+                    CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator,
+                    CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator),
+                    out sinValue))
                 {
                     return sinValue;
                 }
@@ -250,6 +315,11 @@ namespace Shamsullin.Common.Extensions
             return 0f;
         }
 
+        /// <summary>
+        /// Converts an object to single. If conversion is impossible returns 0.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>Converted value</returns>
         public static double ToDouble(this object obj)
         {
             if (obj != null)
@@ -271,7 +341,37 @@ namespace Shamsullin.Common.Extensions
             return 0.0;
         }
 
-        public static int ToInt(this object obj)
+        /// <summary>
+        /// Converts an object to bool. If conversion is impossible returns false.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>Converted value</returns>
+        public static bool ToBool(this object obj)
+        {
+            bool boolValue;
+            int intValue;
+            if (obj == null || obj == DBNull.Value)
+            {
+                return false;
+            }
+            if (obj is bool)
+            {
+                return (bool) obj;
+            }
+            if (bool.TryParse(obj.ToString(), out boolValue))
+            {
+                return boolValue;
+            }
+            return (int.TryParse(obj.ToString(), out intValue) && (intValue != 0));
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to an integer.
+        /// </summary>
+        /// <param name="obj">The input object.</param>
+        /// <param name="deft">The default value.</param>
+        /// <returns>Converted value</returns>
+        public static int ToInt(this object obj, int deft = 0)
         {
             if ((obj != null) && (obj != DBNull.Value))
             {
@@ -288,9 +388,14 @@ namespace Shamsullin.Common.Extensions
                     return intValue;
                 }
             }
-            return 0;
+            return deft;
         }
 
+        /// <summary>
+        /// Converts specified object to the string. Empty string returns in case of null value.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>Converted value</returns>
         public static string ToStr(this object obj)
         {
             if (obj == null || obj == DBNull.Value)

@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Shamsullin.Common.Extensions
 {
     /// <summary>
-    /// Расширения над стандартными методами Linq2Object.
+    /// Extensions for LINQ methods.
     /// </summary>
     public static class LinqExtensions
     {
@@ -32,7 +34,7 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода Any, которое обрабатывает в т.ч. пустые коллекции.
+        /// Any-extension which handles null-pointers.
         /// </summary>
         public static bool AnyEx<T>(this IEnumerable<T> items)
         {
@@ -40,7 +42,7 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода Count, которое обрабатывает в т.ч. пустые коллекции.
+        /// Count-extension which handles null-pointers.
         /// </summary>
         public static int CountEx<T>(this IEnumerable<T> items)
         {
@@ -48,7 +50,7 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода Count, которое обрабатывает в т.ч. пустые коллекции.
+        /// Count-extension which handles null-pointers.
         /// </summary>
         public static int CountEx<T>(this IEnumerable<T> items, Func<T, bool> predicate)
         {
@@ -56,7 +58,7 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода First, которое обрабатывает в т.ч. пустые коллекции.
+        /// First-extension which handles null-pointers.
         /// </summary>
         public static T FirstEx<T>(this IEnumerable<T> source)
         {
@@ -66,7 +68,7 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода Where, которое обрабатывает в т.ч. пустые коллекции.
+        /// Where-extension which handles null-pointers.
         /// </summary>
         public static IEnumerable<T> WhereEx<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
@@ -75,13 +77,16 @@ namespace Shamsullin.Common.Extensions
             return new List<T>();
         }
 
+        /// <summary>
+        /// Count-extension which handles null-pointers and returns an array.
+        /// </summary>
         public static T[] WhereArray<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
             return source.WhereEx(predicate).ToArrayEx();
         }
 
         /// <summary>
-        /// Расширение для метода SingleOrDefault, которое обрабатывает в т.ч. пустые коллекции.
+        /// SingleOrDefault-extension which handles null-pointers.
         /// </summary>
         public static T SingleOrDefaultEx<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
@@ -91,49 +96,54 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода Select, которое обрабатывает в т.ч. пустые коллекции.
+        /// Select-extension which handles null-pointers.
         /// </summary>
-        public static IEnumerable<TResult> SelectEx<TSource, TResult>(this IEnumerable<TSource> source,
-            Func<TSource, TResult> selector)
+        public static IEnumerable<TResult> SelectEx<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             var enumerable = source as TSource[] ?? source.ToArrayEx();
             if (enumerable.Any()) return enumerable.Select(selector);
             return new List<TResult>();
         }
 
+        /// <summary>
+        /// Select-extension which handles null-pointers and returns a list.
+        /// </summary>
         public static List<TResult> SelectList<TSource, TResult>(this IEnumerable<TSource> source,
             Func<TSource, TResult> selector)
         {
             return source.SelectEx(selector).ToListEx();
         }
 
+        /// <summary>
+        /// Select-extension which handles null-pointers and returns an array.
+        /// </summary>
         public static TResult[] SelectArray<TSource, TResult>(this IEnumerable<TSource> source,
             Func<TSource, TResult> selector)
         {
             return source.SelectEx(selector).ToArrayEx();
         }
 
+        /// <summary>
+        /// Union-extension which handles null-pointers and returns a list.
+        /// </summary>
         public static T[] UnionArray<T>(this IEnumerable<T> first, IEnumerable<T> second)
         {
-            return first.Union(second).ToArrayEx();
+            var firstArr = first.ToArrayEx();
+            var secondArr = second.ToArrayEx();
+            var result = firstArr.Union(secondArr).ToArray();
+            return result;
         }
 
         /// <summary>
-        /// Расширение для метода Select, которое обрабатывает в т.ч. пустые коллекции.
+        /// Select-extension which handles null-pointers.
         /// </summary>
-        public static IEnumerable<TResult> SelectOrNull<TSource, TResult>(this IEnumerable<TSource> source,
-            Func<TSource, TResult> selector)
+        public static IEnumerable<TResult> SelectOrNull<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
-            if (source == null)
-            {
-                return null;
-            }
-
-            return source.Select(selector);
+            return source?.Select(selector);
         }
 
         /// <summary>
-        /// Расширение для метода ToArray, которое обрабатывает в т.ч. пустые коллекции.
+        /// ToArray-extension which handles null-pointers.
         /// </summary>
         public static T[] ToArrayOrNull<T>(this IEnumerable<T> source)
         {
@@ -146,7 +156,7 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода Min, которое обрабатывает в т.ч. пустые коллекции.
+        /// Min-extension which handles null-pointers.
         /// </summary>
         public static TResult MinEx<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
@@ -156,7 +166,7 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода Max, которое обрабатывает в т.ч. пустые коллекции.
+        /// Max-extension which handles null-pointers.
         /// </summary>
         public static TResult MaxEx<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
@@ -166,7 +176,7 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода Average, которое обрабатывает в т.ч. пустые коллекции.
+        /// Average-extension which handles null-pointers.
         /// </summary>
         public static double AverageEx<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
         {
@@ -176,7 +186,7 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода Aggregate, которое обрабатывает в т.ч. пустые коллекции.
+        /// Aggregate-extension which handles null-pointers.
         /// </summary>
         public static TSource AggregateEx<TSource>(this IEnumerable<TSource> source,
             Func<TSource, TSource, TSource> func)
@@ -187,7 +197,7 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода ToList, которое обрабатывает в т.ч. пустые коллекции.
+        /// ToList-extension which handles null-pointers.
         /// </summary>
         public static List<T> ToListEx<T>(this IEnumerable<T> enumerable)
         {
@@ -196,7 +206,7 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода ToArray, которое обрабатывает в т.ч. пустые коллекции.
+        /// ToArray-extension which handles null-pointers.
         /// </summary>
         public static T[] ToArrayEx<T>(this IEnumerable<T> enumerable)
         {
@@ -209,8 +219,9 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода Distinct, которое обрабатывает в т.ч. пустые коллекции.
+        /// Distinct-extension which handles null-pointers.
         /// </summary>
+        /// <param name="source">The sequence to remove duplicate elements from.</param>
         public static IEnumerable<T> DistinctEx<T>(this IEnumerable<T> source)
         {
             var enumerable = source as T[] ?? source.ToArrayEx();
@@ -219,31 +230,74 @@ namespace Shamsullin.Common.Extensions
         }
 
         /// <summary>
-        /// Расширение для метода Distinct
+        /// Distinct-extension which handles null-pointers and returns the specified function.
         /// </summary>
-        public static IEnumerable<TKey> DistinctFor<TSource, TKey>(this IEnumerable<TSource> source,
-            Func<TSource, TKey> keySelector)
+        /// <param name="source">The sequence to remove duplicate elements from.</param>
+        /// <param name="keySelector">A transform function to apply to each element.</param>
+        public static IEnumerable<TKey> DistinctFor<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
             return source.SelectEx(keySelector).DistinctEx();
         }
 
         /// <summary>
-        /// Расширение для метода Distinct
+        /// Distinct-extension which handles null-pointers and returns.
         /// </summary>
-        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source,
-            Func<TSource, TKey> keySelector)
+        /// <param name="source">The sequence to remove duplicate elements from.</param>
+        /// <param name="keySelector">A function to be used for comparison.</param>
+        /// <returns></returns>
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
             var keys = new HashSet<TKey>();
             return source.Where(x => keys.Add(keySelector(x)));
         }
 
         /// <summary>
-        /// Enumerates through each item in a list in parallel.
+        /// Execute for-each loop in parallel way.
         /// </summary>
-        public static void ForEachParallel<T>(this IEnumerable<T> list, Action<T> action, int maxThreadsCount = 64)
+        /// <param name="items">The items.</param>
+        /// <param name="action">The action.</param>
+        /// <param name="maxThreadsCount">The maximum number of threads.</param>
+        /// <exception cref="ArgumentOutOfRangeException">maxThreadsCount</exception>
+        public static void ForEachParallel<T>(this IEnumerable<T> items, Action<T> action, int maxThreadsCount = 64)
         {
-            var listArr = list.ToArrayEx();
-            var count = listArr.Count();
+            if (maxThreadsCount < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(maxThreadsCount));
+            }
+
+            if (maxThreadsCount == 1)
+            {
+                items.ForEach(action);
+                return;
+            }
+
+            var tasks = new List<Task>();
+            var queue = new ConcurrentQueue<T>(items);
+            for (var i = 0; i < Math.Min(maxThreadsCount, queue.Count); i++)
+            {
+                tasks.Add(Task.Factory.StartNew(x =>
+                {
+                    T item;
+                    while (queue.TryDequeue(out item))
+                    {
+                        action(item);
+                    }
+                }, null));
+            }
+
+            Task.WaitAll(tasks.ToArray());
+        }
+
+        /// <summary>
+        /// Execute for-each loop in parallel way using batches.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <param name="action">The action.</param>
+        /// <param name="maxThreadsCount">The maximum number of threads.</param>
+        public static void ForEachParallelBatches<T>(this IEnumerable<T> items, Action<T> action, int maxThreadsCount = 64)
+        {
+            var listArr = items.ToArrayEx();
+            var count = listArr.Length;
             if (count == 0) return;
 
             var chunkLength = Math.Ceiling((decimal) count/maxThreadsCount).ToInt();
