@@ -16,7 +16,7 @@ namespace Shamsullin.Win
 
         public static string JQuery(this HtmlDocument doc, string script)
         {
-            var result = doc.InvokeScript("eval", new[] { script });
+            var result = doc.InvokeScript("eval", new[] {script});
             return result.ToStr().Spaces().Trim();
         }
 
@@ -27,10 +27,10 @@ namespace Shamsullin.Win
 
         public static string Spaces(this string input)
         {
-			var result = input.ReplaceEx("  ", " ");
+            var result = input.ReplaceEx("  ", " ");
             while (result.Contains("  "))
             {
-				result = result.ReplaceEx("  ", " ");
+                result = result.ReplaceEx("  ", " ");
             }
 
             return result;

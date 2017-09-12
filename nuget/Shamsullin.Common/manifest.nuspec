@@ -2,10 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Shamsullin.Common</id>
-        <version>1.0.5</version>
+        <version>1.0.7</version>
         <authors>XerMajor</authors>
         <projectUrl>https://github.com/XerMajor/Shamsullin</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<title>Shamsullin.Common</title>
         <description>Infrastructure code for all the projects</description>
         <dependencies>
             <group targetFramework=".NETFramework4.5">

@@ -180,5 +180,17 @@ namespace Shamsullin.Common.Extensions
             var result = BitConverter.ToString(hash).Replace("-", string.Empty).ToLower();
             return result;
         }
+
+        /// <summary>
+        /// Calculates the number of occurrences in the specified string.
+        /// </summary>
+        /// <param name="this">The source string.</param>
+        /// <param name="value">The string to seek.</param>
+        /// <returns></returns>
+        public static int OccurrencesCount(this string @this, string value)
+        {
+            var result = Regex.Matches(@this, Regex.Escape(value)).Count;
+            return result;
+        }
     }
 }

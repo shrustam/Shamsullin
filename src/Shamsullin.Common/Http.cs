@@ -10,9 +10,10 @@ namespace Shamsullin.Common
     /// </summary>
     public class Http
     {
-        public static string Get(string url, CookieContainer cookies = null, NameValueCollection headers = null)
+        public static string Get(string url, bool gzip = true, CookieContainer cookies = null, NameValueCollection headers = null)
         {
-            var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+            var httpRequest = (HttpWebRequest) WebRequest.Create(url);
+            if (gzip) httpRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             if (cookies != null) httpRequest.CookieContainer = cookies;
             if (headers != null) httpRequest.Headers.Add(headers);
             using (var response = (HttpWebResponse) httpRequest.GetResponse())
