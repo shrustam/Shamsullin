@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>log4net.Appender.Telegram</id>
+        <version>1.0.0</version>
+        <authors>github.com/XerMajor</authors>
+        <projectUrl>https://github.com/XerMajor/Shamsullin</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<title>log4net.Appender.Telegram</title>
+        <description>Allows sending logs to Telegram</description>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="log4net" version="1.2.11" />
+                <dependency id="Newtonsoft.Json" version="10.0.3" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\..\src\log4net.Appender.Telegram\bin\Debug\log4net.Appender.Telegram.dll" target="lib\net45\log4net.Appender.Telegram.dll" />
+        <file src="..\..\src\log4net.Appender.Telegram\bin\Debug\Telegram.Bot.dll" target="lib\net45\Telegram.Bot.dll" />
+		<file src="content\config.transform" target="content\app.config.transform" />
+		<file src="content\config.transform" target="content\web.config.transform" />
+    </files>
+</package>
