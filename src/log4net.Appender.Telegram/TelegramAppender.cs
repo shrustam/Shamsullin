@@ -9,6 +9,13 @@ namespace log4net.Appender.Telegram
         public string Token { get; set; }
 
         public string ChatId { get; set; }
+        
+        protected TelegramBotClient Bot;
+        
+        public TelegramAppender()
+        {
+            Bot = new TelegramBotClient(Token);
+        }
 
         protected override void Append(LoggingEvent e)
         {
@@ -23,8 +30,7 @@ namespace log4net.Appender.Telegram
             }
 
             var message = Layout == null ? e.RenderedMessage : RenderLoggingEvent(e);
-            var bot = new TelegramBotClient(Token);
-            bot.SendTextMessageAsync(ChatId, message);
+            Bot.SendTextMessageAsync(ChatId, message);
         }
     }
 }
