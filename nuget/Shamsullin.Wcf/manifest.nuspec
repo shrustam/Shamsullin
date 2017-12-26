@@ -16,5 +16,6 @@
     </metadata>
     <files>
         <file src="..\..\src\Shamsullin.Wcf\bin\Debug\Shamsullin.Wcf.dll" target="lib\net45\Shamsullin.Wcf.dll" />
+        <file src="..\..\src\Shamsullin.Wcf\bin\Debug\Shamsullin.Wcf.xml" target="lib\net45\Shamsullin.Wcf.xml" />
     </files>
 </package>

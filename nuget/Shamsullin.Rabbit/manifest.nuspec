@@ -16,6 +16,7 @@
     </metadata>
     <files>
         <file src="..\..\src\Shamsullin.Rabbit\bin\Debug\Shamsullin.Rabbit.dll" target="lib\net45\Shamsullin.Rabbit.dll" />
+        <file src="..\..\src\Shamsullin.Rabbit\bin\Debug\Shamsullin.Rabbit.xml" target="lib\net45\Shamsullin.Rabbit.xml" />
 		<file src="content\config.transform" target="content\app.config.transform" />
 		<file src="content\config.transform" target="content\web.config.transform" />
     </files>

@@ -10,12 +10,7 @@ namespace log4net.Appender.Telegram
 
         public string ChatId { get; set; }
         
-        protected TelegramBotClient Bot;
-        
-        public TelegramAppender()
-        {
-            Bot = new TelegramBotClient(Token);
-        }
+        protected static TelegramBotClient Bot;
 
         protected override void Append(LoggingEvent e)
         {
@@ -29,6 +24,7 @@ namespace log4net.Appender.Telegram
                 throw new ConfigurationErrorsException("Please set the ChatId under TelegramAppender configuration section: <ChatId>...</ChatId>");
             }
 
+            if (Bot == null) Bot = new TelegramBotClient(Token);
             var message = Layout == null ? e.RenderedMessage : RenderLoggingEvent(e);
             Bot.SendTextMessageAsync(ChatId, message);
         }

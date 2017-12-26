@@ -16,6 +16,7 @@
     </metadata>
     <files>
         <file src="..\..\src\Shamsullin.Common\bin\Debug\Shamsullin.Common.dll" target="lib\net45\Shamsullin.Common.dll" />
+        <file src="..\..\src\Shamsullin.Common\bin\Debug\Shamsullin.Common.xml" target="lib\net45\Shamsullin.Common.xml" />
 		<file src="content\config.transform" target="content\app.config.transform" />
 		<file src="content\config.transform" target="content\web.config.transform" />
     </files>
