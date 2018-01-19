@@ -12,17 +12,21 @@ namespace Shamsullin.Common.Extensions
     /// </summary>
     public static class LinqExtensions
     {
+        /// <summary>
+        /// Execute for-each loop for items.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <param name="action">The action.</param>
         public static IEnumerable<T> ForEach<T>(this IEnumerable<T> items, Action<T> action)
         {
-            var arr = items.ToArrayEx();
-            foreach (var local in arr)
-            {
-                action(local);
-            }
-
-            return arr;
+            return items.ToArrayEx().ForEach(action);
         }
 
+        /// <summary>
+        /// Execute for-each loop for items.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <param name="action">The action.</param>
         public static T[] ForEach<T>(this T[] items, Action<T> action)
         {
             foreach (var local in items)
@@ -265,15 +269,17 @@ namespace Shamsullin.Common.Extensions
                 throw new ArgumentOutOfRangeException(nameof(maxThreadsCount));
             }
 
-            if (maxThreadsCount == 1)
+            var itemsList = items.ToList();
+            var threadsCount = Math.Min(maxThreadsCount, itemsList.Count);
+            if (threadsCount == 1)
             {
-                items.ForEach(action);
+                itemsList.ForEach(action);
                 return;
             }
 
             var tasks = new List<Task>();
-            var queue = new ConcurrentQueue<T>(items);
-            for (var i = 0; i < Math.Min(maxThreadsCount, queue.Count); i++)
+            var queue = new ConcurrentQueue<T>(itemsList);
+            for (var i = 0; i < threadsCount; i++)
             {
                 tasks.Add(Task.Factory.StartNew(x =>
                 {
