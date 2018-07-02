@@ -8,10 +8,12 @@
       <level value="INFO" />
       <appender-ref ref="VerboseAppender" />
       <appender-ref ref="ColoredConsoleAppender" />
+      <appender-ref ref="TelegramAppender" />
     </root>
     <appender name="TelegramAppender" type="log4net.Appender.Telegram.TelegramAppender, log4net.Appender.Telegram">
       <Token>put bot's unique token here</Token>
       <ChatId>put bot's ChatId here</ChatId>
+      <ParseMode>Default|Markdown|Html</ParseMode>
       <filter type="log4net.Filter.LevelRangeFilter">
         <param name="LevelMin" value="WARN"/>
         <param name="LevelMax" value="FATAL"/>
