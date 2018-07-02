@@ -1,5 +1,6 @@
 Configure the appender in the following way:
 
+```xml
 <log4net>
     <root>
       <level value="DEBUG" />
@@ -18,3 +19,4 @@ Configure the appender in the following way:
       </layout>
     </appender>
 </log4net>
+```
