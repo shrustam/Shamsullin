@@ -49,6 +49,9 @@ namespace Shamsullin.Common.Extensions
             return GetPropertyName(expression);
         }
 
+        /// <summary>
+        /// E.g. AProperty.Items[5].Key
+        /// </summary>
         public static object GetPropertyValue<T>(this T obj, string propertyName)
         {
             if (!propertyName.Contains("."))
@@ -57,7 +60,7 @@ namespace Shamsullin.Common.Extensions
             }
 
             object result = obj;
-            var fullPath = propertyName.Split(new[] {'.'});
+            var fullPath = propertyName.Split('.');
             foreach (var name in fullPath)
             {
                 if (result == null) return null;
@@ -67,21 +70,19 @@ namespace Shamsullin.Common.Extensions
                     var matches = rgx.Matches(name);
                     var arrayName = matches[0].Groups[1].Value;
                     var index = matches[0].Groups[2].Value.ToInt();
-                    var array =
-                        result.GetType()
-                            .GetPropertiesEx()
-                            .FirstOrDefault(x => x.Name == arrayName)
-                            .With(x => x.GetValue(result, null)) as object[];
+                    var array = result.GetType()
+                        .GetPropertiesEx()
+                        .FirstOrDefault(x => x.Name == arrayName)
+                        .With(x => x.GetValue(result, null)) as object[];
                     if (array == null) return null;
                     result = array[index];
                 }
                 else
                 {
-                    result =
-                        result.GetType()
-                            .GetPropertiesEx()
-                            .FirstOrDefault(x => x.Name == name)
-                            .With(x => x.GetValue(result, null));
+                    result = result.GetType()
+                        .GetPropertiesEx()
+                        .FirstOrDefault(x => x.Name == name)
+                        .With(x => x.GetValue(result, null));
                 }
             }
 
