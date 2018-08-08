@@ -2,15 +2,15 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>log4net.Appender.Telegram</id>
-        <version>1.0.3</version>
-        <authors>github.com/shrustam</authors>
+        <version>1.0.4</version>
+        <authors>shrustam</authors>
         <projectUrl>https://github.com/shrustam/Shamsullin</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<title>log4net.Appender.Telegram</title>
         <description>Allows sending logs to Telegram</description>
         <dependencies>
             <group targetFramework=".NETFramework4.5">
-                <dependency id="log4net" version="1.2.11" />
+                <dependency id="log4net" version="1.2.10" />
                 <dependency id="Newtonsoft.Json" version="10.0.3" />
             </group>
         </dependencies>

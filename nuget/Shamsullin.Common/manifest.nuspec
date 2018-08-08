@@ -2,22 +2,20 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Shamsullin.Common</id>
-        <version>1.0.8</version>
-        <authors>XerMajor</authors>
-        <projectUrl>https://github.com/XerMajor/Shamsullin</projectUrl>
+        <version>1.0.10</version>
+        <authors>shrustam</authors>
+        <projectUrl>https://github.com/shrustam/Shamsullin</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<title>Shamsullin.Common</title>
         <description>Infrastructure code for all the projects</description>
         <dependencies>
             <group targetFramework=".NETFramework4.5">
-                <dependency id="log4net" version="1.2.11" />
+                <dependency id="log4net" version="1.2.10" />
             </group>
         </dependencies>
     </metadata>
     <files>
         <file src="..\..\src\Shamsullin.Common\bin\Debug\Shamsullin.Common.dll" target="lib\net45\Shamsullin.Common.dll" />
         <file src="..\..\src\Shamsullin.Common\bin\Debug\Shamsullin.Common.xml" target="lib\net45\Shamsullin.Common.xml" />
-		<file src="content\config.transform" target="content\app.config.transform" />
-		<file src="content\config.transform" target="content\web.config.transform" />
     </files>
 </package>
