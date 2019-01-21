@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Runtime.Serialization.Json;
-using System.Security.Authentication;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -18,50 +17,18 @@ namespace Shamsullin.Wcf
     {
         public void ProvideFault(Exception error, MessageVersion version, ref Message fault)
         {
-            var errorModel = new ErrorModel {Message = error.Message, Type = error.GetType().Name, Success = false};
-            fault = Message.CreateMessage(version, null, errorModel, new DataContractJsonSerializer(typeof (ErrorModel)));
-            fault.Properties.Add(WebBodyFormatMessageProperty.Name,
-                new WebBodyFormatMessageProperty(WebContentFormat.Json));
+            var errorModel = new ErrorModel { Message = error.Message, Type = error.GetType().Name, Success = false };
+            fault = Message.CreateMessage(version, null, errorModel, new DataContractJsonSerializer(typeof(ErrorModel)));
+            fault.Properties.Add(WebBodyFormatMessageProperty.Name, new WebBodyFormatMessageProperty(WebContentFormat.Json));
 
-            if (IsAuthenticationException(error))
-            {
-                var rmp = new HttpResponseMessageProperty {StatusCode = HttpStatusCode.Unauthorized};
-                rmp.StatusDescription = rmp.StatusCode.ToString();
-                rmp.Headers[HttpResponseHeader.ContentType] = "application/json";
-                fault.Properties.Add(HttpResponseMessageProperty.Name, rmp);
-            }
-            else if (error.GetType() == typeof (InvalidOperationException) ||
-                     error.GetType() == typeof (ArgumentException))
-            {
-                var rmp = new HttpResponseMessageProperty {StatusCode = HttpStatusCode.BadRequest};
-                rmp.StatusDescription = rmp.StatusCode.ToString();
-                rmp.Headers[HttpResponseHeader.ContentType] = "application/json";
-                fault.Properties.Add(HttpResponseMessageProperty.Name, rmp);
-            }
-            else
-            {
-                errorModel.Message = "Unable to perform the operation";
-                var rmp = new HttpResponseMessageProperty {StatusCode = HttpStatusCode.InternalServerError};
-                rmp.StatusDescription = rmp.StatusCode.ToString();
-                rmp.Headers[HttpResponseHeader.ContentType] = "application/json";
-                fault.Properties.Add(HttpResponseMessageProperty.Name, rmp);
-            }
+            var rmp = new HttpResponseMessageProperty();
+            rmp.Headers[HttpResponseHeader.ContentType] = "application/json";
+            fault.Properties.Add(HttpResponseMessageProperty.Name, rmp);
         }
 
         public bool HandleError(Exception error)
         {
             Log.Instance.Info(error.TargetSite.Name, error);
-            return false;
-        }
-
-        public bool IsAuthenticationException(Exception error)
-        {
-            var current = error;
-            while (current != null)
-            {
-                if (current.GetType() == typeof (AuthenticationException)) return true;
-                current = current.InnerException;
-            }
             return false;
         }
     }
