@@ -15,6 +15,6 @@ namespace Shamsullin.Common
                 x => Instance.InfoFormat("{0}: {1}", x, ConfigurationManager.AppSettings[x]));
         }
 
-        public static ILog Instance { get; private set; }
+        public static ILog Instance { get; set; }
     }
 }
