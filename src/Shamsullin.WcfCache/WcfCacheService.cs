@@ -34,6 +34,7 @@ namespace Shamsullin.WcfCache
             if (result?.Expiry != null && result.Timestamp+result.Expiry < DateTime.Now)
             {
                 Hashtable[key] = null;
+                Log.Instance.Debug($"Expired {key} in {sw.ElapsedMilliseconds}ms");
                 return null;
             }
 

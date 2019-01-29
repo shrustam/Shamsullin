@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using Shamsullin.Wcf;
+using Shamsullin.Common;
 
 namespace Shamsullin.WcfCache
 {
@@ -26,6 +26,7 @@ namespace Shamsullin.WcfCache
             proc.StartInfo.Arguments = $"http add sslcert ipport=127.0.0.1:443 certhash={cert.Thumbprint} appid={{{appid}}}";
             proc.Start();
             proc.WaitForExit();
+            Log.Instance.Info($"Certificate {cert.Thumbprint} installed");
 
             // Start WCF
             var wcf = new ServiceHost(typeof(WcfCacheService));
@@ -34,8 +35,8 @@ namespace Shamsullin.WcfCache
             //wcf.AddServiceEndpoint(typeof(WcfCacheService), httpsBinding, "").EndpointBehaviors.Add(new WcfRestBehavior());
             wcf.Open();
 
-            // Keep console open
-            while (true) Console.ReadKey();
+            Log.Instance.Info("WCF service has started");
+            new WinService().Start();
         }
 
         private static string GetAppId()

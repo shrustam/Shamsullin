@@ -50,10 +50,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
@@ -64,6 +66,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\nuget\Shamsullin.WinService\content\WinService.cs">
+      <Link>WinService.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WcfCacheService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -74,8 +80,14 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="_install.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="_uninstall.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
