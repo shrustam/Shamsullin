@@ -44,6 +44,10 @@
       <HintPath>..\..\..\Trading\packages\Shamsullin.Common.1.0.11\lib\net45\Shamsullin.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Shamsullin.Wcf, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Trading\packages\Shamsullin.Wcf.1.0.4\lib\net45\Shamsullin.Wcf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -60,15 +64,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Shamsullin.Wcf\ErrorModel.cs">
-      <Link>ErrorModel.cs</Link>
-    </Compile>
-    <Compile Include="..\Shamsullin.Wcf\WcfRestBehavior.cs">
-      <Link>WcfRestBehavior.cs</Link>
-    </Compile>
-    <Compile Include="..\Shamsullin.Wcf\WcfRestErrorHandler.cs">
-      <Link>WcfRestErrorHandler.cs</Link>
-    </Compile>
     <Compile Include="WcfCacheService.cs">
       <SubType>Component</SubType>
     </Compile>
