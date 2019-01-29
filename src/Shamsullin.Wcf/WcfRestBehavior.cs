@@ -3,13 +3,13 @@ using System.IO;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Configuration;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Xml;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Shamsullin.Wcf
 {
@@ -18,6 +18,7 @@ namespace Shamsullin.Wcf
     /// </summary>
     public class WcfRestBehavior : WebHttpBehavior
     {
+
         private bool IsGetOperation(OperationDescription operation)
         {
             var wga = operation.Behaviors.Find<WebGetAttribute>();
@@ -61,6 +62,8 @@ namespace Shamsullin.Wcf
     {
         private readonly OperationDescription _operation;
 
+        private static readonly JsonSerializerSettings ReplySerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+
         public NewtonsoftJsonDispatchFormatter(OperationDescription operation)
         {
             _operation = operation;
@@ -68,25 +71,21 @@ namespace Shamsullin.Wcf
 
         public void DeserializeRequest(Message message, object[] parameters)
         {
+            // Content-Type: application/json or text/json
             using (var mss = new MemoryStream())
+            using (var messageWriter = JsonReaderWriterFactory.CreateJsonWriter(mss))
             {
-                using (var messageWriter = JsonReaderWriterFactory.CreateJsonWriter(mss))
-                {
-                    message.WriteMessage(messageWriter);
-                    messageWriter.Flush();
-                    parameters[0] = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(mss.ToArray()), _operation.Messages[0].Body.Parts[0].Type);
-                }
+                message.WriteMessage(messageWriter);
+                messageWriter.Flush();
+                var json = Encoding.UTF8.GetString(mss.ToArray());
+                parameters[0] = JsonConvert.DeserializeObject(json, _operation.Messages[0].Body.Parts[0].Type);
             }
         }
 
         public Message SerializeReply(MessageVersion messageVersion, object[] parameters, object result)
         {
-            var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(result, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            }));
-
+            var json = JsonConvert.SerializeObject(result, ReplySerializerSettings);
+            var body = Encoding.UTF8.GetBytes(json);
             var replyMessage = Message.CreateMessage(messageVersion, _operation.Messages[1].Action, new RawBodyWriter(body));
             replyMessage.Properties.Add(WebBodyFormatMessageProperty.Name, new WebBodyFormatMessageProperty(WebContentFormat.Raw));
             var respProp = new HttpResponseMessageProperty();
@@ -136,6 +135,19 @@ namespace Shamsullin.Wcf
             writer.WriteStartElement("Binary");
             writer.WriteBase64(_content, 0, _content.Length);
             writer.WriteEndElement();
+        }
+    }
+
+    /// <summary>
+    /// Extension for behavior can be used in web.config.
+    /// </summary>
+    public class WcfRestBehaviorExtension : BehaviorExtensionElement
+    {
+        public override Type BehaviorType => typeof(WcfRestBehavior);
+
+        protected override object CreateBehavior()
+        {
+            return new WcfRestBehavior();
         }
     }
 }
