@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Web.Services;
+using Shamsullin.Common;
 using Shamsullin.Wcf;
 
 namespace Shamsullin.WcfCache
@@ -27,6 +29,7 @@ namespace Shamsullin.WcfCache
         [WebInvoke(Method = "POST")]
         public byte[] Get(string key)
         {
+            var sw = Stopwatch.StartNew();
             var result = Hashtable[key] as Record;
             if (result?.Expiry != null && result.Timestamp+result.Expiry > DateTime.Now)
             {
@@ -34,13 +37,16 @@ namespace Shamsullin.WcfCache
                 return null;
             }
 
+            Log.Instance.Debug($"Get processed in {sw.ElapsedMilliseconds}ms");
             return result?.Value;
         }
 
         [WebInvoke(Method = "POST")]
         public void Set(Record record)
         {
+            var sw = Stopwatch.StartNew();
             Hashtable[record.Key] = record;
+            Log.Instance.Debug($"Set processed in {sw.ElapsedMilliseconds}ms");
         }
     }
 }

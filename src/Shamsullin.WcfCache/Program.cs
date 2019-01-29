@@ -28,9 +28,10 @@ namespace Shamsullin.WcfCache
             proc.WaitForExit();
 
             // Start WCF
-            var wcf = new ServiceHost(typeof(WcfCacheService), new Uri("https://127.0.0.1/wcfcache"));
-            var httpsBinding = new WebHttpBinding(WebHttpSecurityMode.Transport);
-            wcf.AddServiceEndpoint(typeof(WcfCacheService), httpsBinding, "").EndpointBehaviors.Add(new WcfRestBehavior());
+            var wcf = new ServiceHost(typeof(WcfCacheService));
+            //var wcf = new ServiceHost(typeof(WcfCacheService), new Uri("https://127.0.0.1/wcfcache"));
+            //var httpsBinding = new WebHttpBinding(WebHttpSecurityMode.Transport);
+            //wcf.AddServiceEndpoint(typeof(WcfCacheService), httpsBinding, "").EndpointBehaviors.Add(new WcfRestBehavior());
             wcf.Open();
 
             // Keep console open

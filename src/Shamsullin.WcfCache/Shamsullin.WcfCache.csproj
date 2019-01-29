@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Trading\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Trading\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -44,11 +44,8 @@
       <HintPath>..\..\..\Trading\packages\Shamsullin.Common.1.0.11\lib\net45\Shamsullin.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Shamsullin.Wcf, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Trading\packages\Shamsullin.Wcf.1.0.3\lib\net45\Shamsullin.Wcf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -63,6 +60,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shamsullin.Wcf\ErrorModel.cs">
+      <Link>ErrorModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Shamsullin.Wcf\WcfRestBehavior.cs">
+      <Link>WcfRestBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Shamsullin.Wcf\WcfRestErrorHandler.cs">
+      <Link>WcfRestErrorHandler.cs</Link>
+    </Compile>
     <Compile Include="WcfCacheService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -70,8 +76,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Trading\Common\Common.csproj">
