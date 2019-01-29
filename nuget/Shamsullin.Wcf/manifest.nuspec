@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Shamsullin.Wcf</id>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
         <authors>XerMajor</authors>
         <projectUrl>https://github.com/XerMajor/Shamsullin</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -15,7 +15,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\..\src\Shamsullin.Wcf\bin\Debug\Shamsullin.Wcf.dll" target="lib\net45\Shamsullin.Wcf.dll" />
-        <file src="..\..\src\Shamsullin.Wcf\bin\Debug\Shamsullin.Wcf.xml" target="lib\net45\Shamsullin.Wcf.xml" />
+        <file src="..\..\src\Shamsullin.Wcf\bin\Release\Shamsullin.Wcf.dll" target="lib\net45\Shamsullin.Wcf.dll" />
+        <file src="..\..\src\Shamsullin.Wcf\bin\Release\Shamsullin.Wcf.xml" target="lib\net45\Shamsullin.Wcf.xml" />
     </files>
 </package>
