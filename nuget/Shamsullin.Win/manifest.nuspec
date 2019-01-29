@@ -14,7 +14,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\..\src\Shamsullin.Win\bin\Debug\Shamsullin.Win.dll" target="lib\net45\Shamsullin.Win.dll" />
-        <file src="..\..\src\Shamsullin.Win\bin\Debug\Shamsullin.Win.xml" target="lib\net45\Shamsullin.Win.xml" />
+        <file src="..\..\src\Shamsullin.Win\bin\Release\Shamsullin.Win.dll" target="lib\net45\Shamsullin.Win.dll" />
+        <file src="..\..\src\Shamsullin.Win\bin\Release\Shamsullin.Win.xml" target="lib\net45\Shamsullin.Win.xml" />
     </files>
 </package>
