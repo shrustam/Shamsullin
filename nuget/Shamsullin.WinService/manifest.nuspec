@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Shamsullin.WinService</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <authors>XerMajor</authors>
         <projectUrl>https://github.com/XerMajor/Shamsullin</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -19,9 +19,7 @@
     </metadata>
     <files>
         <file src="content\install.bat" target="content\install.bat" />
-        <file src="content\Service.cs" target="content\Service.cs" />
-        <file src="content\Installer.cs" target="content\Installer.cs" />
-        <file src="content\Installer.resx" target="content\Installer.resx" />
         <file src="content\uninstall.bat" target="content\uninstall.bat" />
+        <file src="content\WinService.cs" target="content\WinService.cs" />
     </files>
 </package>
