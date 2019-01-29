@@ -31,13 +31,13 @@ namespace Shamsullin.WcfCache
         {
             var sw = Stopwatch.StartNew();
             var result = Hashtable[key] as Record;
-            if (result?.Expiry != null && result.Timestamp+result.Expiry > DateTime.Now)
+            if (result?.Expiry != null && result.Timestamp+result.Expiry < DateTime.Now)
             {
                 Hashtable[key] = null;
                 return null;
             }
 
-            Log.Instance.Debug($"Get processed in {sw.ElapsedMilliseconds}ms");
+            Log.Instance.Debug($"Got {key} in {sw.ElapsedMilliseconds}ms");
             return result?.Value;
         }
 
@@ -46,7 +46,7 @@ namespace Shamsullin.WcfCache
         {
             var sw = Stopwatch.StartNew();
             Hashtable[record.Key] = record;
-            Log.Instance.Debug($"Set processed in {sw.ElapsedMilliseconds}ms");
+            Log.Instance.Debug($"Set {record.Key} in {sw.ElapsedMilliseconds}ms");
         }
     }
 }
