@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
+using System.Threading.Tasks;
 using log4net.Core;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
@@ -15,6 +17,8 @@ namespace log4net.Appender.Telegram
 
         protected static TelegramBotClient Bot;
 
+        private readonly List<Task> _tasks = new List<Task>();
+
         protected override void Append(LoggingEvent e)
         {
             if (string.IsNullOrEmpty(Token))
@@ -29,7 +33,12 @@ namespace log4net.Appender.Telegram
 
             if (Bot == null) Bot = new TelegramBotClient(Token);
             var message = Layout == null ? e.RenderedMessage : RenderLoggingEvent(e);
-            Bot.SendTextMessageAsync(ChatId, message, ParseMode);
+            _tasks.Add(Bot.SendTextMessageAsync(ChatId, message, ParseMode));
+        }
+
+        protected override void OnClose()
+        {
+            Task.WaitAll(_tasks.ToArray());
         }
     }
 }
