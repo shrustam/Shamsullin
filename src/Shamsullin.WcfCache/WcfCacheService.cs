@@ -26,6 +26,14 @@ namespace Shamsullin.WcfCache
             public TimeSpan? Expiry;
         }
 
+        [WebInvoke(Method = "GET")]
+        public Hashtable Stats(string key)
+        {
+            var result = new Hashtable();
+            result["curr_items"] = Hashtable.Count;
+            return result;
+        }
+
         [WebInvoke(Method = "POST")]
         public byte[] Get(string key)
         {
