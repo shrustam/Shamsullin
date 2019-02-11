@@ -1,7 +1,6 @@
-﻿using System.Configuration;
-using log4net;
+﻿using log4net;
 using log4net.Config;
-using Shamsullin.Common.Extensions;
+using System.Configuration;
 
 namespace Shamsullin.Common
 {
@@ -11,8 +10,10 @@ namespace Shamsullin.Common
         {
             XmlConfigurator.Configure();
             Instance = LogManager.GetLogger(string.Empty);
-            ConfigurationManager.AppSettings.AllKeys.ForEach(
-                x => Instance.InfoFormat("{0}: {1}", x, ConfigurationManager.AppSettings[x]));
+            //foreach (var key in ConfigurationManager.AppSettings.AllKeys)
+            //{
+            //    Instance.InfoFormat("{0}: {1}", key, ConfigurationManager.AppSettings[key]);
+            //}
         }
 
         public static ILog Instance { get; set; }
