@@ -23,7 +23,9 @@ namespace Shamsullin.WcfCache
             var proc = new Process();
             proc.StartInfo.FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "netsh.exe");
             proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            proc.StartInfo.Arguments = $"http add sslcert ipport=127.0.0.1:443 certhash={cert.Thumbprint} appid={{{appid}}}";
+            // netsh http show sslcert
+            // netsh http delete sslcert ipport=0.0.0.0:443
+            proc.StartInfo.Arguments = $"http add sslcert ipport=0.0.0.0:443 certhash={cert.Thumbprint} appid={{{appid}}}";
             proc.Start();
             proc.WaitForExit();
             Log.Instance.Info($"Certificate {cert.Thumbprint} installed");
