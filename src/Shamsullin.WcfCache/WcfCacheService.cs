@@ -13,7 +13,7 @@ namespace Shamsullin.WcfCache
     [WcfRestErrorHandler]
     public class WcfCacheService : WebService
     {
-        private static readonly Hashtable Hashtable = new Hashtable();
+        private static readonly Hashtable Hashtable = new Hashtable {{"ping", new Record("pong")} };
 
         public class Record
         {
@@ -21,25 +21,29 @@ namespace Shamsullin.WcfCache
 
             public string Key;
 
-            public byte[] Value;
+            public string Value;
 
             public TimeSpan? Expiry;
+
+            public Record(string value)
+            {
+                Value = value;
+            }
         }
 
         [WebInvoke(Method = "GET")]
         public Hashtable Stats(string key)
         {
-            var result = new Hashtable();
-            result["curr_items"] = Hashtable.Count;
+            var result = new Hashtable {["curr_items"] = Hashtable.Count};
             return result;
         }
 
-        [WebInvoke(Method = "POST")]
-        public byte[] Get(string key)
+        [WebInvoke(Method = "GET")]
+        public string Get(string key)
         {
             var sw = Stopwatch.StartNew();
-            var result = Hashtable[key] as Record;
-            if (result?.Expiry != null && result.Timestamp+result.Expiry < DateTime.Now)
+            var record = Hashtable[key] as Record;
+            if (record?.Expiry != null && record.Timestamp+record.Expiry < DateTime.Now)
             {
                 Hashtable[key] = null;
                 Log.Instance.Debug($"Expired {key} in {sw.ElapsedMilliseconds}ms");
@@ -47,7 +51,8 @@ namespace Shamsullin.WcfCache
             }
 
             Log.Instance.Debug($"Got {key} in {sw.ElapsedMilliseconds}ms");
-            return result?.Value;
+            var result = record?.Value;
+            return result;
         }
 
         [WebInvoke(Method = "POST")]
