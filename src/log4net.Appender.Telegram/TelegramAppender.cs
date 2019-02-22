@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 using log4net.Core;
 using Telegram.Bot;
@@ -38,7 +39,7 @@ namespace log4net.Appender.Telegram
 
         protected override void OnClose()
         {
-            Task.WaitAll(_tasks.ToArray());
+            Task.WaitAll(_tasks.Where(x => !x.IsCompleted).ToArray());
         }
     }
 }
