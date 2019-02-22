@@ -18,7 +18,6 @@ namespace Shamsullin.Wcf
     /// </summary>
     public class WcfRestBehavior : WebHttpBehavior
     {
-
         private bool IsGetOperation(OperationDescription operation)
         {
             var wga = operation.Behaviors.Find<WebGetAttribute>();
@@ -84,14 +83,28 @@ namespace Shamsullin.Wcf
 
         public Message SerializeReply(MessageVersion messageVersion, object[] parameters, object result)
         {
-            var json = JsonConvert.SerializeObject(result, ReplySerializerSettings);
-            var body = Encoding.UTF8.GetBytes(json);
-            var replyMessage = Message.CreateMessage(messageVersion, _operation.Messages[1].Action, new RawBodyWriter(body));
-            replyMessage.Properties.Add(WebBodyFormatMessageProperty.Name, new WebBodyFormatMessageProperty(WebContentFormat.Raw));
-            var respProp = new HttpResponseMessageProperty();
-            respProp.Headers[HttpResponseHeader.ContentType] = "application/json";
-            replyMessage.Properties.Add(HttpResponseMessageProperty.Name, respProp);
-            return replyMessage;
+            var resultStr = result as string;
+            if (resultStr == null)
+            {
+                var json = JsonConvert.SerializeObject(result, ReplySerializerSettings);
+                var body = Encoding.UTF8.GetBytes(json);
+                var replyMessage = Message.CreateMessage(messageVersion, _operation.Messages[1].Action, new RawBodyWriter(body));
+                replyMessage.Properties.Add(WebBodyFormatMessageProperty.Name, new WebBodyFormatMessageProperty(WebContentFormat.Raw));
+                var respProp = new HttpResponseMessageProperty();
+                respProp.Headers[HttpResponseHeader.ContentType] = "application/json";
+                replyMessage.Properties.Add(HttpResponseMessageProperty.Name, respProp);
+                return replyMessage;
+            }
+            else
+            {
+                var body = Encoding.UTF8.GetBytes(resultStr);
+                var replyMessage = Message.CreateMessage(messageVersion, _operation.Messages[1].Action, new RawBodyWriter(body));
+                replyMessage.Properties.Add(WebBodyFormatMessageProperty.Name, new WebBodyFormatMessageProperty(WebContentFormat.Raw));
+                var respProp = new HttpResponseMessageProperty();
+                respProp.Headers[HttpResponseHeader.ContentType] = "text/html; charset=utf8";
+                replyMessage.Properties.Add(HttpResponseMessageProperty.Name, respProp);
+                return replyMessage;
+            }
         }
     }
 
