@@ -12,6 +12,7 @@ namespace Shamsullin.WcfCache
 {
     [ServiceContract]
     [WcfRestErrorHandler]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class WcfCacheService : WebService
     {
         private static readonly Hashtable Hashtable = new Hashtable {{"ping", new Record("pong")} };
@@ -73,10 +74,13 @@ namespace Shamsullin.WcfCache
         {
             try
             {
-                var sw = Stopwatch.StartNew();
-                Interlocked.Increment(ref _writers);
-                Hashtable[record.Key] = record;
-                Log.Instance.Debug($"Set {record.Key} in {sw.ElapsedMilliseconds}ms");
+                lock (Hashtable) // Hashtable is not thread safe for write
+                {
+                    var sw = Stopwatch.StartNew();
+                    var writers = Interlocked.Increment(ref _writers);
+                    Hashtable[record.Key] = record;
+                    Log.Instance.Debug($"Set {record.Key} in {sw.ElapsedMilliseconds}ms, writers: {writers}");
+                }
             }
             finally
             {
