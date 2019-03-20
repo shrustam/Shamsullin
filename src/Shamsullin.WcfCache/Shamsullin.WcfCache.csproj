@@ -44,10 +44,6 @@
       <HintPath>..\..\..\Trading\packages\Shamsullin.Common.1.0.11\lib\net45\Shamsullin.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Shamsullin.Wcf, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Trading\packages\Shamsullin.Wcf.1.0.4\lib\net45\Shamsullin.Wcf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -56,6 +52,7 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
@@ -89,6 +86,12 @@
     <None Include="_uninstall.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shamsullin.Wcf\Shamsullin.Wcf.csproj">
+      <Project>{a6c224e1-e502-4940-a4ff-05c2f9863502}</Project>
+      <Name>Shamsullin.Wcf</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

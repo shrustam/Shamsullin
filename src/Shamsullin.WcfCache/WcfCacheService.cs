@@ -3,6 +3,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using System.Threading;
 using System.Web.Services;
 using Shamsullin.Common;
 using Shamsullin.Wcf;
@@ -14,6 +15,10 @@ namespace Shamsullin.WcfCache
     public class WcfCacheService : WebService
     {
         private static readonly Hashtable Hashtable = new Hashtable {{"ping", new Record("pong")} };
+
+        private static int _readers;
+
+        private static int _writers;
 
         public class Record
         {
@@ -41,26 +46,42 @@ namespace Shamsullin.WcfCache
         [WebInvoke(Method = "GET")]
         public string Get(string key)
         {
-            var sw = Stopwatch.StartNew();
-            var record = Hashtable[key] as Record;
-            if (record?.Expiry != null && record.Timestamp+record.Expiry < DateTime.Now)
+            try
             {
-                Hashtable[key] = null;
-                Log.Instance.Debug($"Expired {key} in {sw.ElapsedMilliseconds}ms");
-                return null;
-            }
+                var sw = Stopwatch.StartNew();
+                var readers = Interlocked.Increment(ref _readers);
+                var record = Hashtable[key] as Record;
+                if (record?.Expiry != null && record.Timestamp + record.Expiry < DateTime.Now)
+                {
+                    Hashtable[key] = null;
+                    Log.Instance.Debug($"Expired {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
+                    return null;
+                }
 
-            Log.Instance.Debug($"Got {key} in {sw.ElapsedMilliseconds}ms");
-            var result = record?.Value;
-            return result;
+                Log.Instance.Debug($"Got {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
+                var result = record?.Value;
+                return result;
+            }
+            finally
+            {
+                Interlocked.Decrement(ref _readers);
+            }
         }
 
         [WebInvoke(Method = "POST")]
         public void Set(Record record)
         {
-            var sw = Stopwatch.StartNew();
-            Hashtable[record.Key] = record;
-            Log.Instance.Debug($"Set {record.Key} in {sw.ElapsedMilliseconds}ms");
+            try
+            {
+                var sw = Stopwatch.StartNew();
+                Interlocked.Increment(ref _writers);
+                Hashtable[record.Key] = record;
+                Log.Instance.Debug($"Set {record.Key} in {sw.ElapsedMilliseconds}ms");
+            }
+            finally
+            {
+                Interlocked.Decrement(ref _writers);
+            }
         }
     }
 }
