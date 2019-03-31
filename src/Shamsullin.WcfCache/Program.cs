@@ -1,5 +1,4 @@
-﻿
-using System.ServiceModel;
+﻿using System.ServiceModel;
 using Shamsullin.Common;
 using Shamsullin.Wcf;
 
@@ -9,8 +8,11 @@ namespace Shamsullin.WcfCache
     {
         static void Main()
         {
-            Helpers.ConfigureSsl();
-            Log.Instance.Info("SSL has configured");
+            Installer.OnInstall += () =>
+            {
+                Helpers.ConfigureSsl();
+                Log.Instance.Info("SSL has configured");
+            };
 
             // Start WCF
             var wcf = new ServiceHost(typeof(WcfCacheService));

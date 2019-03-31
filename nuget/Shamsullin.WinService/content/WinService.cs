@@ -101,6 +101,8 @@ namespace Shamsullin
 
         public static string Description { get; set; }
 
+        public static Action OnInstall;
+
         static Installer()
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -111,6 +113,7 @@ namespace Shamsullin
         public Installer()
         {
             InitializeComponent();
+            OnInstall?.Invoke();
         }
 
         /// <summary> 
