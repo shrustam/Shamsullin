@@ -1,11 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
+﻿
 using System.ServiceModel;
 using Shamsullin.Common;
+using Shamsullin.Wcf;
 
 namespace Shamsullin.WcfCache
 {
@@ -13,22 +9,8 @@ namespace Shamsullin.WcfCache
     {
         static void Main()
         {
-            // Install Certificate
-            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-            store.Open(OpenFlags.ReadOnly);
-            var certs = store.Certificates.Cast<X509Certificate2>();
-            var cert = certs.First(x => x.HasPrivateKey);
-
-            var appid = GetAppId();
-            var proc = new Process();
-            proc.StartInfo.FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), "netsh.exe");
-            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            // netsh http show sslcert
-            // netsh http delete sslcert ipport=0.0.0.0:443
-            proc.StartInfo.Arguments = $"http add sslcert ipport=0.0.0.0:443 certhash={cert.Thumbprint} appid={{{appid}}}";
-            proc.Start();
-            proc.WaitForExit();
-            Log.Instance.Info($"Certificate {cert.Thumbprint} installed");
+            Helpers.ConfigureSsl();
+            Log.Instance.Info("SSL has configured");
 
             // Start WCF
             var wcf = new ServiceHost(typeof(WcfCacheService));
@@ -39,14 +21,6 @@ namespace Shamsullin.WcfCache
 
             Log.Instance.Info("WCF service has started");
             new WinService().Start();
-        }
-
-        private static string GetAppId()
-        {
-            var assembly = typeof(Program).Assembly;
-            var attribute = (GuidAttribute)assembly.GetCustomAttributes(typeof(GuidAttribute), true)[0];
-            var result = attribute.Value;
-            return result;
         }
     }
 }

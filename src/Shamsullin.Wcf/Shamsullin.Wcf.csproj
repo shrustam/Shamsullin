@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ErrorModel.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WcfRestBehavior.cs" />
     <Compile Include="WcfRestErrorHandler.cs" />
