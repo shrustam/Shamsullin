@@ -51,10 +51,10 @@ namespace Shamsullin.WcfCache
             {
                 var sw = Stopwatch.StartNew();
                 var readers = Interlocked.Increment(ref _readers);
-                var record = Hashtable[key] as Record;
+                var record = Hashtable[key] as Record;  // Hashtable is thread safe for read
                 if (record?.Expiry != null && record.Timestamp + record.Expiry < DateTime.Now)
                 {
-                    Hashtable[key] = null;
+                    lock (Hashtable) Hashtable.Remove(key);
                     Log.Instance.Debug($"Expired {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
                     return null;
                 }
@@ -74,7 +74,7 @@ namespace Shamsullin.WcfCache
         {
             try
             {
-                lock (Hashtable) // Hashtable is not thread safe for write
+                lock (Hashtable)
                 {
                     var sw = Stopwatch.StartNew();
                     var writers = Interlocked.Increment(ref _writers);
