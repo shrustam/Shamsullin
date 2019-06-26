@@ -64,6 +64,7 @@
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="GenericHashtable.cs" />
     <Compile Include="Highcached.cs" />
     <Compile Include="Http.cs" />
     <Compile Include="Log.cs" />
