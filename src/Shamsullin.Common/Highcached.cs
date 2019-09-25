@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.Caching;
+using System.Threading.Tasks;
 using Shamsullin.Common.Extensions;
 
 namespace Shamsullin.Common
@@ -52,7 +54,7 @@ namespace Shamsullin.Common
                     result = GetCache(key);
                     if (result == null)
                     {
-                        Log.Instance.DebugFormat("Highcached {1} min miss {0}", key, _minutesForCache.Value);
+                        Trace.WriteLine($"Highcached {_minutesForCache.Value} min miss {key}");
                         result = invocation();
                         SetCache(key, result, DateTime.Now.AddMinutes(_minutesForCache.Value));
                         SetCache(keyRefreshMe, 1, DateTime.Now.AddMinutes(_minutesForCache.Value/2));
@@ -62,7 +64,7 @@ namespace Shamsullin.Common
             else if (_usePreload && GetCache(keyRefreshMe) == null)
             {
                 // It's time to preload data for future requests.
-                new AsyncManager(delegate
+                Task.Run(() =>
                 {
                     lock (key.SyncRoot())
                     {
@@ -70,15 +72,18 @@ namespace Shamsullin.Common
                         {
                             var newCacheResult = invocation();
                             SetCache(key, newCacheResult, DateTime.Now.AddMinutes(_minutesForCache.Value));
-                            SetCache(keyRefreshMe, 1, DateTime.Now.AddMinutes(_minutesForCache.Value/2));
+                            SetCache(keyRefreshMe, 1, DateTime.Now.AddMinutes(_minutesForCache.Value / 2));
                         }
                     }
-                }).ExecuteAsync();
+                });
             }
 
             if (result == DBNull.Value) return default(T);
             if (result != null && !(result is T))
-                Log.Instance.WarnFormat("Highcached returned wrong object for key {0}", key);
+            {
+                Trace.WriteLine($"Highcached returned wrong object for key {key}");
+            }
+
             return (T) result;
         }
 

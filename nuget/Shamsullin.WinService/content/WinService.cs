@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
@@ -44,15 +45,15 @@ namespace Shamsullin
         protected override void OnStart(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += DomainUnhandledException;
-            Log.Instance.InfoFormat("[{0}] started as service", ServiceName);
-            Log.Instance.InfoFormat("Server name: {0}", Environment.MachineName);
+            Trace.WriteLine($"[{ServiceName}] started as service");
+            Trace.WriteLine($"Server name: {Environment.MachineName}");
             if (_onStart != null) Task.Run(() => _onStart());
         }
 
         protected override void OnStop()
         {
             _onStop?.Invoke();
-            Log.Instance.InfoFormat("[{0}] service stopped", ServiceName);
+            Trace.WriteLine($"[{ServiceName}] service stopped");
         }
 
         private void DomainUnhandledException(object sender, UnhandledExceptionEventArgs e)

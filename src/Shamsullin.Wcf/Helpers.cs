@@ -36,7 +36,7 @@ namespace Shamsullin.Wcf
                     powershell.Start();
                     powershell.WaitForExit();
                     cert = GetCertificate();
-                    Common.Log.Instance.Info("SSL cert created");
+                    Trace.WriteLine("SSL cert created");
                 }
 
                 var appid = GetAppId(Assembly.GetCallingAssembly());
@@ -48,7 +48,7 @@ namespace Shamsullin.Wcf
                 proc.StartInfo.Arguments = $"http add sslcert ipport=0.0.0.0:443 certhash={cert.Thumbprint} appid={{{appid}}}";
                 proc.Start();
                 proc.WaitForExit();
-                Common.Log.Instance.Info("SSL cert set for application");
+                Trace.WriteLine("SSL cert set for application");
             }
 
             // Open port
@@ -60,7 +60,7 @@ namespace Shamsullin.Wcf
                 proc.StartInfo.Arguments = "advfirewall firewall add rule name=\"Port 443 (HTTPS)\" protocol=TCP dir=in localport=443 action=allow";
                 proc.Start();
                 proc.WaitForExit();
-                Common.Log.Instance.Info("443 port opened");
+                Trace.WriteLine("443 port opened");
             }
         }
 

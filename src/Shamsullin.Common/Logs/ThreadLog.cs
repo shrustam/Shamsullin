@@ -3,7 +3,7 @@ using System.Threading;
 using log4net;
 using log4net.Config;
 
-namespace Shamsullin.Common
+namespace Shamsullin.Common.Logs
 {
     /// <summary>
     /// Loggers separated by thread name.

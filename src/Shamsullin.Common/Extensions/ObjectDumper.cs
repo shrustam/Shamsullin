@@ -100,7 +100,7 @@ namespace Shamsullin.Common.Extensions
                         }
                         catch (Exception e)
                         {
-                            value = string.Format("{0}: {1}", e.GetType().FullName, e.Message);
+                            value = $"{e.GetType().FullName}: {e.Message}";
                         }
 
                         if (value == null || type.IsValueType || type == typeof (string))
@@ -151,7 +151,7 @@ namespace Shamsullin.Common.Extensions
         {
             if (o == null) return "null";
             if (o is DateTime) return ((DateTime) o).ToShortDateString();
-            if (o is string) return string.Format("\"{0}\"", o);
+            if (o is string) return $"\"{o}\"";
             if (o is int) return ((int) o).ToString(CultureInfo.InvariantCulture);
             if (o is float) return ((float) o).ToString(CultureInfo.InvariantCulture);
             if (o is double) return ((double) o).ToString(CultureInfo.InvariantCulture);

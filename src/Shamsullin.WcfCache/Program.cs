@@ -1,5 +1,5 @@
-﻿using System.ServiceModel;
-using Shamsullin.Common;
+﻿using System.Diagnostics;
+using System.ServiceModel;
 using Shamsullin.Wcf;
 
 namespace Shamsullin.WcfCache
@@ -11,7 +11,7 @@ namespace Shamsullin.WcfCache
             Installer.OnInstall += () =>
             {
                 Helpers.ConfigureSsl();
-                Log.Instance.Info("SSL has configured");
+                Trace.WriteLine("SSL has configured");
             };
 
             // Start WCF
@@ -21,7 +21,7 @@ namespace Shamsullin.WcfCache
             //wcf.AddServiceEndpoint(typeof(WcfCacheService), httpsBinding, "").EndpointBehaviors.Add(new WcfRestBehavior());
             wcf.Open();
 
-            Log.Instance.Info("WCF service has started");
+            Trace.WriteLine("WCF service has started");
             new WinService().Start();
         }
     }

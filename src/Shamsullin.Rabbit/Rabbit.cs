@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using Shamsullin.Common;
 
 namespace Shamsullin.Rabbit
 {
@@ -181,9 +181,8 @@ namespace Shamsullin.Rabbit
             }
             catch (Exception ex)
             {
-                Log.Instance.Error("Can't deserialize object", ex);
+                Trace.WriteLine(ex);
             }
-
 
             return default(TM);
         }
@@ -199,15 +198,15 @@ namespace Shamsullin.Rabbit
                 }
                 catch (ThreadInterruptedException ex)
                 {
-                    Log.Instance.Warn("Thread interrupted", ex);
+                    Trace.WriteLine(ex);
                 }
                 catch (ThreadAbortException ex)
                 {
-                    Log.Instance.Warn("Thread aborted", ex);
+                    Trace.WriteLine(ex);
                 }
                 catch (Exception ex)
                 {
-                    Log.Instance.ErrorFormat("Unable to process message. Sleeping for {0}ms {1}", SleepOnError, ex);
+                    Trace.WriteLine(ex);
                     Thread.Sleep(SleepOnError);
                 }
             }
@@ -315,7 +314,7 @@ namespace Shamsullin.Rabbit
                 {
                     try
                     {
-                        if (i > 0) Log.Instance.InfoFormat("Trying №{0} to process message {1}", i + 1, message);
+                        if (i > 0) Trace.WriteLine($"Trying №{i + 1} to process message {message}");
                         handler(message);
                         break;
                     }
@@ -323,11 +322,11 @@ namespace Shamsullin.Rabbit
                     {
                         if (i == MaxRetries - 1)
                         {
-                            Log.Instance.ErrorFormat("Unable to process message. Skipping. {0}", ex);
+                            Trace.WriteLine($"Unable to process message. Skipping. {ex}");
                         }
                         else
                         {
-                            Log.Instance.WarnFormat("Unable to process message. Will retry in {0}ms. {1}", SleepOnError, ex);
+                            Trace.WriteLine($"Unable to process message. Will retry in {SleepOnError}ms. {ex}");
                             Thread.Sleep(SleepOnError);
                         }
                     }

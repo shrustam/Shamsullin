@@ -1,11 +1,11 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
-using Shamsullin.Common;
 
 namespace Shamsullin.Wcf
 {
@@ -36,7 +36,7 @@ namespace Shamsullin.Wcf
 
         public bool HandleError(Exception error)
         {
-            Log.Instance.ErrorFormat($"{error.TargetSite.Name}: {error}");
+            Trace.WriteLine($"{error.TargetSite.Name}: {error}");
             return false;
         }
     }

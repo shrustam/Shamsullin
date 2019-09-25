@@ -27,9 +27,7 @@ namespace Shamsullin.Common
         {
             var connectionString = ConfigurationManager.ConnectionStrings[name].ConnectionString;
             if (connectionString.Contains("Application Name")) return connectionString;
-            return string.Format("{0};Application Name={1}",
-                ConfigurationManager.ConnectionStrings[name].ConnectionString.TrimEnd(new[] {';'}),
-                ApplicationName);
+            return $"{ConfigurationManager.ConnectionStrings[name].ConnectionString.TrimEnd(new[] {';'})};Application Name={ApplicationName}";
         }
 
         public virtual int ExecuteNonQuery(string query, params SqlParameter[] args)
@@ -60,15 +58,11 @@ namespace Shamsullin.Common
 
             var nonNullColumns =
                 columns.WhereArray(x => sqlParameters.Any(y => y.ParameterName.TrimStart('@') == x && y.Value != null));
-            var insertQuery = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", tableName,
-                nonNullColumns.Aggregate((x, y) => x + "," + y),
-                nonNullColumns.Select(x => string.Format("@{0}", x)).Aggregate((x, y) => x + "," + y));
+            var insertQuery = $"INSERT INTO {tableName} ({nonNullColumns.Aggregate((x, y) => x+","+y)}) VALUES ({nonNullColumns.Select(x => $"@{x}").Aggregate((x, y) => x+","+y)})";
 
-            var updateQuery = string.Format("UPDATE {0} SET {1} WHERE {2}", tableName,
-                columns.Select(x => string.Format("{0}=@{0}", x)).AggregateEx((x, y) => x + "," + y),
-                keys.Select(x => string.Format("{0}=@{0}", x)).AggregateEx((x, y) => x + " AND " + y));
+            var updateQuery = $"UPDATE {tableName} SET {columns.Select(x => string.Format("{0}=@{0}", x)).AggregateEx((x, y) => x+","+y)} WHERE {keys.Select(x => string.Format("{0}=@{0}", x)).AggregateEx((x, y) => x+" AND "+y)}";
 
-            var resultQuery = string.Format("{0} IF @@ROWCOUNT=0 {1}", updateQuery, insertQuery);
+            var resultQuery = $"{updateQuery} IF @@ROWCOUNT=0 {insertQuery}";
             using (var connection = GetConnection(ConnectionStringName))
             using (var command = CreateSqlCommand(connection, resultQuery))
             {
@@ -96,8 +90,7 @@ namespace Shamsullin.Common
                 }
             }
 
-            var query = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", tableName,
-                columns.ToString().TrimEnd(new[] {','}), values.ToString().TrimEnd(new[] {','}));
+            var query = $"INSERT INTO {tableName} ({columns.ToString().TrimEnd(new[] {','})}) VALUES ({values.ToString().TrimEnd(new[] {','})})";
             using (var connection = GetConnection(ConnectionStringName))
             using (var command = CreateSqlCommand(connection, query))
             {
@@ -213,8 +206,8 @@ namespace Shamsullin.Common
         public static string GetXml(IEnumerable<int> identifiers)
         {
             var filters = identifiers.ToList().SelectEx(
-                x => string.Format(@"<Item identifier=""{0}"" />", x));
-            return string.Format("<Items>{0}</Items>", filters.AggregateEx((x, y) => x + y));
+                x => $@"<Item identifier=""{x}"" />");
+            return $"<Items>{filters.AggregateEx((x, y) => x+y)}</Items>";
         }
 
         /// <summary>
@@ -239,8 +232,8 @@ namespace Shamsullin.Common
                 if (table != null)
                 {
                     var ids = table.Rows.Cast<DataRow>().SelectEx(x => x["Id"]);
-                    value = ids.Aggregate(value, (x, y) => x + string.Format("SELECT {0} Id UNION ", y));
-                    value = string.Format("({0}) t", value.Substring(0, value.Length - 6));
+                    value = ids.Aggregate(value, (x, y) => x +$"SELECT {y} Id UNION ");
+                    value = $"({value.Substring(0, value.Length-6)}) t";
                 }
             }
             else if (parameter.Value == DBNull.Value || parameter.SqlValue == null)
@@ -249,7 +242,7 @@ namespace Shamsullin.Common
             }
             else if (new[] {DbType.String, DbType.Guid}.Contains(parameter.DbType))
             {
-                value = string.Format("'{0}'", parameter.SqlValue);
+                value = $"'{parameter.SqlValue}'";
             }
             else if (new[] {DbType.Boolean}.Contains(parameter.DbType))
             {
@@ -257,7 +250,7 @@ namespace Shamsullin.Common
             }
             else if (new[] {DbType.Date, DbType.DateTime, DbType.DateTime2}.Contains(parameter.DbType))
             {
-                value = string.Format("'{0}'", parameter.Value.To<DateTime>().ToString("yyyy-MM-dd HH:mm:ss"));
+                value = $"'{parameter.Value.To<DateTime>().ToString("yyyy-MM-dd HH:mm:ss")}'";
             }
             else
             {

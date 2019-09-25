@@ -6,7 +6,6 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Threading;
 using System.Web.Services;
-using Shamsullin.Common;
 using Shamsullin.Wcf;
 
 namespace Shamsullin.WcfCache
@@ -66,11 +65,11 @@ namespace Shamsullin.WcfCache
                 if (record?.Expiry != null && record.Timestamp+record.Expiry < DateTime.Now)
                 {
                     lock (Hashtable) Hashtable.Remove(key);
-                    Log.Instance.Debug($"Expired {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
+                    Trace.WriteLine($"Expired {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
                     return null;
                 }
 
-                Log.Instance.Debug($"Got {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
+                Trace.WriteLine($"Got {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
                 var result = record?.Value;
                 return result;
             }
@@ -90,7 +89,7 @@ namespace Shamsullin.WcfCache
                     var sw = Stopwatch.StartNew();
                     var writers = Interlocked.Increment(ref _writers);
                     Hashtable[record.Key] = record;
-                    Log.Instance.Debug($"Set {record.Key} in {sw.ElapsedMilliseconds}ms, writers: {writers}");
+                    Trace.WriteLine($"Set {record.Key} in {sw.ElapsedMilliseconds}ms, writers: {writers}");
                 }
             }
             finally
