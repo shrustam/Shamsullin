@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Threading;
@@ -38,8 +39,18 @@ namespace Shamsullin.WcfCache
         }
 
         [WebInvoke(Method = "GET")]
-        public Hashtable Stats(string key)
+        public Hashtable Stats()
         {
+            // Cleanup
+            foreach (var key in Hashtable.Keys.Cast<string>().ToArray())
+            {
+                var record = Hashtable[key] as Record;
+                if (record == null || record.Expiry != null && record.Timestamp+record.Expiry < DateTime.Now)
+                {
+                    lock (Hashtable) Hashtable.Remove(key);
+                }
+            }
+
             var result = new Hashtable {["curr_items"] = Hashtable.Count};
             return result;
         }
@@ -51,8 +62,8 @@ namespace Shamsullin.WcfCache
             {
                 var sw = Stopwatch.StartNew();
                 var readers = Interlocked.Increment(ref _readers);
-                var record = Hashtable[key] as Record;  // Hashtable is thread safe for read
-                if (record?.Expiry != null && record.Timestamp + record.Expiry < DateTime.Now)
+                var record = Hashtable[key] as Record; // Hashtable is thread safe for read
+                if (record?.Expiry != null && record.Timestamp+record.Expiry < DateTime.Now)
                 {
                     lock (Hashtable) Hashtable.Remove(key);
                     Log.Instance.Debug($"Expired {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
