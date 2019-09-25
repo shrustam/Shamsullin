@@ -1,22 +1,23 @@
-Configure the appender in the following way:
+# log4net.Appender.Telegram
 
+Configure:
 ```xml
-<log4net>
-    <root>
-      <level value="DEBUG" />
-      <appender-ref ref="TelegramAppender" />
-    </root>
-    <appender name="TelegramAppender" type="log4net.Appender.Telegram.TelegramAppender, log4net.Appender.Telegram">
-      <Token>put bot's unique token here</Token>
-      <ChatId>put bot's ChatId here</ChatId>
-      <ParseMode>Default|Markdown|Html</ParseMode>
-      <filter type="log4net.Filter.LevelRangeFilter">
-        <param name="LevelMin" value="ERROR"/>
-        <param name="LevelMax" value="FATAL"/>
-      </filter>
-      <layout type="log4net.Layout.PatternLayout">
+<appender name="TelegramAppender" type="log4net.Appender.Telegram.TelegramAppender, log4net.Appender.Telegram">
+    <ChatId>Your User ID</ChatId>
+    <Token>Your Telegram Bot Token</Token>
+    <filter type="log4net.Filter.LevelRangeFilter">
+        <param name="LevelMin" value="ERROR" />
+        <param name="LevelMax" value="FATAL" />
+    </filter>
+    <layout type="log4net.Layout.PatternLayout">
         <conversionPattern value="%message" />
-      </layout>
-    </appender>
-</log4net>
+    </layout>
+</appender>
 ```
+
+Use:
+```cs
+LogManager.GetLogger(string.Empty).Fatal("Fatal message");
+```
+
+Appender is non-blocking. What is why call ``LogManager.Shutdown();`` when application finishes.
