@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.Appender.Telegram",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shamsullin.WcfCache", "src\Shamsullin.WcfCache\Shamsullin.WcfCache.csproj", "{C761EF6A-4C9B-4D20-9681-4619547D5E5F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shamsullin.RunAsService", "src\Shamsullin.RunAsService\Shamsullin.RunAsService.csproj", "{3C06A99D-A42C-4D7B-AFBC-804CDA090850}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{C761EF6A-4C9B-4D20-9681-4619547D5E5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C761EF6A-4C9B-4D20-9681-4619547D5E5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C761EF6A-4C9B-4D20-9681-4619547D5E5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C06A99D-A42C-4D7B-AFBC-804CDA090850}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C06A99D-A42C-4D7B-AFBC-804CDA090850}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C06A99D-A42C-4D7B-AFBC-804CDA090850}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C06A99D-A42C-4D7B-AFBC-804CDA090850}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,5 +64,6 @@ Global
 		{92B25A78-9D69-4258-B3DD-09677726C3A1} = {40A5E288-6526-4E7B-889D-5BD9499E60DC}
 		{E01F43EB-E95F-456A-B594-C8A8667A3959} = {40A5E288-6526-4E7B-889D-5BD9499E60DC}
 		{C761EF6A-4C9B-4D20-9681-4619547D5E5F} = {40A5E288-6526-4E7B-889D-5BD9499E60DC}
+		{3C06A99D-A42C-4D7B-AFBC-804CDA090850} = {40A5E288-6526-4E7B-889D-5BD9499E60DC}
 	EndGlobalSection
 EndGlobal
