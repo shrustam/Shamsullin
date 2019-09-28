@@ -272,22 +272,16 @@ namespace Shamsullin.Common.Extensions
         /// <returns>Converted value</returns>
         public static decimal ToDecimal(this object obj)
         {
-            if (obj != null)
-            {
-                decimal decValue;
-                if (obj is decimal)
-                {
-                    return (decimal) obj;
-                }
-                if (decimal.TryParse(obj.ToString().Replace(
-                    CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator,
-                    CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator),
-                    out decValue))
-                {
-                    return decValue;
-                }
-            }
-            return 0M;
+            if (obj == null) return 0;
+            if (obj is decimal) return (decimal)obj;
+            if (obj is double) return new decimal((double)obj);
+            if (obj is int) return (int)obj;
+            if (obj is long) return (long)obj;
+
+            var valueStr = obj.ToString();
+            if (string.IsNullOrWhiteSpace(valueStr)) return 0;
+            var result = new decimal(double.Parse(obj.ToString()));
+            return result;
         }
 
         /// <summary>

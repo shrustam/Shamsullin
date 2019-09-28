@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using System.Threading.Tasks;
-using Shamsullin.Common;
 
 namespace Shamsullin
 {
@@ -59,7 +58,7 @@ namespace Shamsullin
         private void DomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             AppDomain.CurrentDomain.UnhandledException -= DomainUnhandledException;
-            Log.Instance.Error("Unhandled exception", (Exception) e.ExceptionObject);
+            Trace.WriteLine(e.ExceptionObject);
             OnStop();
         }
 
