@@ -3,12 +3,19 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Reflection;
 using Shamsullin.Common.Extensions;
 
 namespace Shamsullin.Common.Helpers
 {
     public static class Utils
     {
+        public static string GetResource(this Assembly assembly, string filename)
+        {
+            using (var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.{filename}"))
+            using (var reader = new StreamReader(stream)) return reader.ReadToEnd();
+        }
+
         public static T GetArg<T>(string[] args, string name, T def)
         {
             var ix = args.LastIndexOf(name);

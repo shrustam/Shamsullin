@@ -1,15 +1,16 @@
-﻿using System.Windows.Forms;
-using Shamsullin.Common.Extensions;
-using Shamsullin.Win.Properties;
+﻿using System.Reflection;
+using System.Windows.Forms;
+using Shamsullin.Common.Helpers;
 
-namespace Shamsullin.Win
+namespace Shamsullin.Common.Extensions
 {
     public static class JQueryExtensions
     {
         public static void JQuery(this HtmlDocument doc)
         {
+            var jqueryJS = Assembly.GetExecutingAssembly().GetResource("Resources.jquery.js");
             var script = doc.CreateElement("script");
-            script.SetAttribute("text", Resources.Jquery);
+            script.SetAttribute("text", jqueryJS);
             script.SetAttribute("type", "text/javascript");
             doc.GetElementsByTagName("head")[0].AppendChild(script);
         }
