@@ -42,10 +42,6 @@
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Shamsullin.Common, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Trading\packages\Shamsullin.Common.1.0.11\lib\net45\Shamsullin.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -91,7 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shamsullin.Wcf\Shamsullin.Wcf.csproj">
-      <Project>{a6c224e1-e502-4940-a4ff-05c2f9863502}</Project>
+      <Project>{A6C224E1-E502-4940-A4FF-05C2F9863502}</Project>
       <Name>Shamsullin.Wcf</Name>
     </ProjectReference>
   </ItemGroup>
