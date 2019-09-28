@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.ServiceModel;
-using Shamsullin.Wcf;
+using Shamsullin.Common.Wcf;
 
 namespace Shamsullin.WcfCache
 {

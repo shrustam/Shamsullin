@@ -86,9 +86,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shamsullin.Wcf\Shamsullin.Wcf.csproj">
-      <Project>{A6C224E1-E502-4940-A4FF-05C2F9863502}</Project>
-      <Name>Shamsullin.Wcf</Name>
+    <ProjectReference Include="..\Shamsullin.Common\Shamsullin.Common.csproj">
+      <Project>{C9A7783F-E00F-4E07-BD38-9C2FCC926DFA}</Project>
+      <Name>Shamsullin.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

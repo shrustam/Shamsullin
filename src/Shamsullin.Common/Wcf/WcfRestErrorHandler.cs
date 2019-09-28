@@ -8,7 +8,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-namespace Shamsullin.Wcf
+namespace Shamsullin.Common.Wcf
 {
     /// <summary>
     /// Exceptions handler for REST/JSON.

@@ -11,7 +11,7 @@ using System.Text;
 using System.Xml;
 using Newtonsoft.Json;
 
-namespace Shamsullin.Wcf
+namespace Shamsullin.Common.Wcf
 {
     /// <summary>
     /// REST behavior.

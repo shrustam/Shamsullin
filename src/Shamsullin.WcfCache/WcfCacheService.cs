@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Threading;
 using System.Web.Services;
-using Shamsullin.Wcf;
+using Shamsullin.Common.Wcf;
 
 namespace Shamsullin.WcfCache
 {

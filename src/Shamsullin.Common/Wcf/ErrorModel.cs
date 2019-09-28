@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Shamsullin.Wcf
+namespace Shamsullin.Common.Wcf
 {
     /// <summary>
     /// Web services error model. Returns is exception happens.

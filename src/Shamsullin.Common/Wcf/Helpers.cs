@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Shamsullin.Wcf
+namespace Shamsullin.Common.Wcf
 {
     public class Helpers
     {
