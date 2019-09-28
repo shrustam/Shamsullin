@@ -15,8 +15,8 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\..\src\Shamsullin.Rabbit\bin\Release\Shamsullin.Rabbit.dll" target="lib\net45\Shamsullin.Rabbit.dll" />
-        <file src="..\..\src\Shamsullin.Rabbit\bin\Release\Shamsullin.Rabbit.xml" target="lib\net45\Shamsullin.Rabbit.xml" />
+        <file src="..\..\src\bin\Release\Shamsullin.Rabbit.dll" target="lib\net45\Shamsullin.Rabbit.dll" />
+        <file src="..\..\src\bin\Release\Shamsullin.Rabbit.xml" target="lib\net45\Shamsullin.Rabbit.xml" />
 		<file src="content\config.transform" target="content\app.config.transform" />
 		<file src="content\config.transform" target="content\web.config.transform" />
     </files>

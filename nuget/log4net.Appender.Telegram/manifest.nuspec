@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>log4net.Appender.Telegram</id>
-        <version>1.0.6</version>
+        <version>1.0.7</version>
         <authors>shrustam</authors>
         <projectUrl>https://github.com/shrustam/Shamsullin/tree/master/src/log4net.Appender.Telegram</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -16,8 +16,8 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="..\..\src\log4net.Appender.Telegram\bin\Release\log4net.Appender.Telegram.dll" target="lib\net45\log4net.Appender.Telegram.dll" />
-        <file src="..\..\src\log4net.Appender.Telegram\bin\Release\log4net.Appender.Telegram.xml" target="lib\net45\log4net.Appender.Telegram.xml" />
+        <file src="..\..\src\bin\Release\log4net.Appender.Telegram.dll" target="lib\net45\log4net.Appender.Telegram.dll" />
+        <file src="..\..\src\bin\Release\log4net.Appender.Telegram.xml" target="lib\net45\log4net.Appender.Telegram.xml" />
         <file src="..\..\packages\Telegram.Bot.13.2.1\lib\netstandard1.1\Telegram.Bot.dll" target="lib\net45\Telegram.Bot.dll" />
     </files>
 </package>
