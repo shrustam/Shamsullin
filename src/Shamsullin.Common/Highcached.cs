@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
+using log4net;
 using Shamsullin.Common.Extensions;
 
 namespace Shamsullin.Common
@@ -15,6 +15,7 @@ namespace Shamsullin.Common
 
         private readonly bool _usePreload;
         private readonly double? _minutesForCache;
+        public ILog Log = LogManager.GetLogger(typeof(Highcached));
 
         public Highcached(double? minutesForCache, bool usePreload = true)
         {
@@ -54,7 +55,7 @@ namespace Shamsullin.Common
                     result = GetCache(key);
                     if (result == null)
                     {
-                        Trace.WriteLine($"Highcached {_minutesForCache.Value} min miss {key}");
+                        Log?.Debug($"Highcached {_minutesForCache.Value} min miss {key}");
                         result = invocation();
                         SetCache(key, result, DateTime.Now.AddMinutes(_minutesForCache.Value));
                         SetCache(keyRefreshMe, 1, DateTime.Now.AddMinutes(_minutesForCache.Value/2));
@@ -81,7 +82,7 @@ namespace Shamsullin.Common
             if (result == DBNull.Value) return default(T);
             if (result != null && !(result is T))
             {
-                Trace.WriteLine($"Highcached returned wrong object for key {key}");
+                Log?.Warn($"Highcached returned wrong object for key {key}");
             }
 
             return (T) result;

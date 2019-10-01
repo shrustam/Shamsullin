@@ -79,7 +79,6 @@
     <Compile Include="Http.cs" />
     <Compile Include="Logs\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Logs\ThreadLog.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Wcf\ErrorModel.cs" />
     <Compile Include="Wcf\Helpers.cs" />

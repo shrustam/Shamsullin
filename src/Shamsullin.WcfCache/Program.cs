@@ -1,17 +1,19 @@
-﻿using System.Diagnostics;
-using System.ServiceModel;
+﻿using System.ServiceModel;
+using log4net;
 using Shamsullin.Common.Wcf;
 
 namespace Shamsullin.WcfCache
 {
     class Program
     {
+        public static ILog Log = LogManager.GetLogger(typeof(Program));
+
         static void Main()
         {
             Installer.OnInstall += () =>
             {
                 Helpers.ConfigureSsl();
-                Trace.WriteLine("SSL has configured");
+                Log?.Info("SSL has configured");
             };
 
             // Start WCF
@@ -21,7 +23,7 @@ namespace Shamsullin.WcfCache
             //wcf.AddServiceEndpoint(typeof(WcfCacheService), httpsBinding, "").EndpointBehaviors.Add(new WcfRestBehavior());
             wcf.Open();
 
-            Trace.WriteLine("WCF service has started");
+            Log?.Info("WCF service has started");
             new WinService().Start();
         }
     }

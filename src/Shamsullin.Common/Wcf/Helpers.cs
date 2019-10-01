@@ -5,11 +5,14 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
+using log4net;
 
 namespace Shamsullin.Common.Wcf
 {
     public class Helpers
     {
+        public static ILog Log = LogManager.GetLogger(typeof(Helpers));
+
         public static X509Certificate2 GetCertificate()
         {
             // Install Certificate
@@ -36,7 +39,7 @@ namespace Shamsullin.Common.Wcf
                     powershell.Start();
                     powershell.WaitForExit();
                     cert = GetCertificate();
-                    Trace.WriteLine("SSL cert created");
+                    Log?.Info("SSL cert created");
                 }
 
                 var appid = GetAppId(Assembly.GetCallingAssembly());
@@ -48,7 +51,7 @@ namespace Shamsullin.Common.Wcf
                 proc.StartInfo.Arguments = $"http add sslcert ipport=0.0.0.0:443 certhash={cert.Thumbprint} appid={{{appid}}}";
                 proc.Start();
                 proc.WaitForExit();
-                Trace.WriteLine("SSL cert set for application");
+                Log?.Info("SSL cert set for application");
             }
 
             // Open port
@@ -60,7 +63,7 @@ namespace Shamsullin.Common.Wcf
                 proc.StartInfo.Arguments = "advfirewall firewall add rule name=\"Port 443 (HTTPS)\" protocol=TCP dir=in localport=443 action=allow";
                 proc.Start();
                 proc.WaitForExit();
-                Trace.WriteLine("443 port opened");
+                Log?.Info("443 port opened");
             }
         }
 

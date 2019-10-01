@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Threading;
 using System.Web.Services;
+using log4net;
 using Shamsullin.Common.Wcf;
 
 namespace Shamsullin.WcfCache
@@ -16,6 +17,7 @@ namespace Shamsullin.WcfCache
     public class WcfCacheService : WebService
     {
         private static readonly Hashtable Hashtable = new Hashtable {{"ping", new Record("pong")} };
+        public ILog Log = LogManager.GetLogger(typeof(WcfCacheService));
 
         private static int _readers;
 
@@ -65,11 +67,11 @@ namespace Shamsullin.WcfCache
                 if (record?.Expiry != null && record.Timestamp+record.Expiry < DateTime.Now)
                 {
                     lock (Hashtable) Hashtable.Remove(key);
-                    Trace.WriteLine($"Expired {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
+                    Log?.Debug($"Expired {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
                     return null;
                 }
 
-                Trace.WriteLine($"Got {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
+                Log?.Debug($"Got {key} in {sw.ElapsedMilliseconds}ms, readers: {readers}");
                 var result = record?.Value;
                 return result;
             }
@@ -89,7 +91,7 @@ namespace Shamsullin.WcfCache
                     var sw = Stopwatch.StartNew();
                     var writers = Interlocked.Increment(ref _writers);
                     Hashtable[record.Key] = record;
-                    Trace.WriteLine($"Set {record.Key} in {sw.ElapsedMilliseconds}ms, writers: {writers}");
+                    Log?.Debug($"Set {record.Key} in {sw.ElapsedMilliseconds}ms, writers: {writers}");
                 }
             }
             finally

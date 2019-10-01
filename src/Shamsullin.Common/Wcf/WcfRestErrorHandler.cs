@@ -1,12 +1,12 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
+using log4net;
 
 namespace Shamsullin.Common.Wcf
 {
@@ -15,6 +15,8 @@ namespace Shamsullin.Common.Wcf
     /// </summary>
     public class WcfRestErrorHandler : IErrorHandler
     {
+        public ILog Log = LogManager.GetLogger(typeof(WcfRestErrorHandler));
+
         public void ProvideFault(Exception error, MessageVersion version, ref Message fault)
         {
             var errorModel = new ErrorModel { Message = error.Message, Type = error.GetType().Name, Success = false };
@@ -28,7 +30,7 @@ namespace Shamsullin.Common.Wcf
 
         public bool HandleError(Exception error)
         {
-            Trace.WriteLine(error);
+            Log?.Warn(error);
             return false;
         }
     }

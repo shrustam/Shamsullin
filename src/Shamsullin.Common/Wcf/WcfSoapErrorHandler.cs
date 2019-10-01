@@ -1,11 +1,11 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
+using log4net;
 
 namespace Shamsullin.Common.Wcf
 {
@@ -14,6 +14,8 @@ namespace Shamsullin.Common.Wcf
     /// </summary>
     public class WcfSoapErrorHandler : IErrorHandler
     {
+        public ILog Log = LogManager.GetLogger(typeof(WcfSoapErrorHandler));
+
         public void ProvideFault(Exception error, MessageVersion version, ref Message fault)
         {
             var faultException = error as FaultException;
@@ -36,7 +38,7 @@ namespace Shamsullin.Common.Wcf
 
         public bool HandleError(Exception error)
         {
-            Trace.WriteLine($"{error.TargetSite.Name}: {error}");
+            Log?.Warn(error.TargetSite.Name, error);
             return false;
         }
     }

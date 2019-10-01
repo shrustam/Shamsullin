@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using System.Threading.Tasks;
+using log4net;
 
 namespace Shamsullin
 {
@@ -13,6 +13,7 @@ namespace Shamsullin
         private IContainer components;
         private readonly Action _onStart;
         private readonly Action _onStop;
+        public ILog Log = LogManager.GetLogger(typeof(WinService));
 
         public WinService(Action onStart = null, Action onStop = null)
         {
@@ -44,21 +45,21 @@ namespace Shamsullin
         protected override void OnStart(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += DomainUnhandledException;
-            Trace.WriteLine($"[{ServiceName}] started as service");
-            Trace.WriteLine($"Server name: {Environment.MachineName}");
+            Log?.Info($"[{ServiceName}] started as service");
+            Log?.Info($"Server name: {Environment.MachineName}");
             if (_onStart != null) Task.Run(() => _onStart());
         }
 
         protected override void OnStop()
         {
             _onStop?.Invoke();
-            Trace.WriteLine($"[{ServiceName}] service stopped");
+            Log?.Info($"[{ServiceName}] service stopped");
         }
 
         private void DomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             AppDomain.CurrentDomain.UnhandledException -= DomainUnhandledException;
-            Trace.WriteLine(e.ExceptionObject);
+            Log?.Error(e.ExceptionObject);
             OnStop();
         }
 

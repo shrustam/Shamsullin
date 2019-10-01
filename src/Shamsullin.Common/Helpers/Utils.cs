@@ -4,12 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Reflection;
+using log4net;
 using Shamsullin.Common.Extensions;
 
 namespace Shamsullin.Common.Helpers
 {
     public static class Utils
     {
+        public static ILog Log = LogManager.GetLogger(typeof(Utils));
+
         public static string GetResource(this Assembly assembly, string filename)
         {
             using (var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.{filename}"))
@@ -58,7 +61,7 @@ namespace Shamsullin.Common.Helpers
             }
             catch(Exception ex)
             {
-                Trace.WriteLine(ex.ToString());
+                Log?.Warn(ex);
                 return null;
             }
         }
