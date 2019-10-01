@@ -10,6 +10,13 @@ namespace Shamsullin.Common
     /// </summary>
     public class Http
     {
+		public static void AvoidSslCheck()
+		{
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
+            ServicePointManager.CheckCertificateRevocationList = false;
+		}
+		
         public static string Get(string url, bool gzip = true, CookieContainer cookies = null, NameValueCollection headers = null)
         {
             var httpRequest = (HttpWebRequest) WebRequest.Create(url);
