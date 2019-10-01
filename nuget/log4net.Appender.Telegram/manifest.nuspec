@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>log4net.Appender.Telegram</id>
-        <version>1.0.7</version>
+        <version>1.0.8</version>
         <authors>shrustam</authors>
         <projectUrl>https://github.com/shrustam/Shamsullin/tree/master/src/log4net.Appender.Telegram</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>

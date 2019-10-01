@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Shamsullin.WinService</id>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <authors>XerMajor</authors>
         <projectUrl>https://github.com/XerMajor/Shamsullin</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Win services quick creation</description>
         <dependencies>
             <group targetFramework=".NETFramework4.5">
-                <dependency id="Shamsullin.Common" version="1.0.3" />
+                <dependency id="log4net" version="1.2.10" />
             </group>
         </dependencies>
         <contentFiles>
