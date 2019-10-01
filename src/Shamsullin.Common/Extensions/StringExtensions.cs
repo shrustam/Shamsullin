@@ -82,40 +82,7 @@ namespace Shamsullin.Common.Extensions
 
         public static bool EqualsNoCase(this string thisArg, string otherString)
         {
-            return String.Compare(thisArg, otherString, StringComparison.OrdinalIgnoreCase) == 0;
-        }
-
-        public static string JoinBySeparator(this IEnumerable<string> enumerable, string separator)
-        {
-            return string.Join(separator, enumerable.ToArray());
-        }
-
-        public static string JoinBySeparator(this IEnumerable<int> enumerable, char separator, string fallbackValue)
-        {
-            if (!enumerable.Any()) return fallbackValue;
-
-            var str = new StringBuilder();
-            foreach (var value in enumerable)
-            {
-                str.Append(value);
-                str.Append(separator);
-            }
-            str.Remove(str.Length - 1, 1);
-            return str.ToString();
-        }
-
-        public static string JoinBySeparator(this IEnumerable<int> enumerable, string separator, string fallbackValue)
-        {
-            if (!enumerable.Any()) return fallbackValue;
-
-            var str = new StringBuilder();
-            foreach (var value in enumerable)
-            {
-                str.Append(value);
-                str.Append(separator);
-            }
-            str.Remove(str.Length - 1, separator.Length);
-            return str.ToString();
+            return string.Compare(thisArg, otherString, StringComparison.OrdinalIgnoreCase) == 0;
         }
 
         public static string WrapTag(this string thisArg, string tagName)
@@ -186,10 +153,15 @@ namespace Shamsullin.Common.Extensions
         /// </summary>
         /// <param name="this">The source string.</param>
         /// <param name="value">The string to seek.</param>
-        /// <returns></returns>
         public static int OccurrencesCount(this string @this, string value)
         {
             var result = Regex.Matches(@this, Regex.Escape(value)).Count;
+            return result;
+        }
+		
+		public static string Join<T>(this IEnumerable<T> items, string separator = ", ")
+        {
+            var result = string.Join(separator, items);
             return result;
         }
     }
