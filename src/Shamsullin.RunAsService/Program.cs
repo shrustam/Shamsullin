@@ -37,8 +37,10 @@ namespace Shamsullin.RunAsService
 
         private static void StartProcess(string fileName, string arguments)
         {
+            var fileInfo = new FileInfo(fileName);
             var psi = new ProcessStartInfo(fileName, arguments)
             {
+                WorkingDirectory = fileInfo.DirectoryName,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 RedirectStandardOutput = true,
                 LoadUserProfile = false,
